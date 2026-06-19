@@ -78,7 +78,7 @@ export class MariaDBDriver implements DatabaseDriver {
 
     const dumpFile = path.join(fullDir, 'full.sql');
 
-    const command = `mysqldump --host=${this.config.host} --port=${this.config.port} --user=${this.config.username} ${this.config.database} > "${dumpFile}"`;
+    const command = `mysqldump --column-statistics=0 --host=${this.config.host} --port=${this.config.port} --user=${this.config.username} ${this.config.database} > "${dumpFile}"`;
 
     await execAsync(command, {
       env: { ...process.env, MYSQL_PWD: this.config.password },
@@ -88,7 +88,7 @@ export class MariaDBDriver implements DatabaseDriver {
     // just with the table name appended so mysqldump only exports that table.
     for (const table of tables) {
       const tableFile = path.join(dbDir, `${table}.sql`);
-      const tableCommand = `mysqldump --host=${this.config.host} --port=${this.config.port} --user=${this.config.username} ${this.config.database} ${table} > "${tableFile}"`;
+      const tableCommand = `mysqldump --column-statistics=0 --host=${this.config.host} --port=${this.config.port} --user=${this.config.username} ${this.config.database} ${table} > "${tableFile}"`;
 
       await execAsync(tableCommand, {
         env: { ...process.env, MYSQL_PWD: this.config.password },
@@ -140,7 +140,7 @@ export class MariaDBDriver implements DatabaseDriver {
     const timestamp = Date.now();
     const snapshotFile = path.join(targetDir, `snapshot-${timestamp}.sql`);
 
-    const command = `mysqldump --host=${this.config.host} --port=${this.config.port} --user=${this.config.username} ${this.config.database} > "${snapshotFile}"`;
+    const command = `mysqldump --column-statistics=0 --host=${this.config.host} --port=${this.config.port} --user=${this.config.username} ${this.config.database} > "${snapshotFile}"`;
 
     await execAsync(command, {
       env: { ...process.env, MYSQL_PWD: this.config.password },

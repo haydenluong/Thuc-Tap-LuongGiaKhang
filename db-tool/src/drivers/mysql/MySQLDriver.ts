@@ -78,7 +78,7 @@ export class MySQLDriver implements DatabaseDriver {
     // full.sql is what be written to. This is the file that will contain the full database dump.
     const dumpFile = path.join(fullDir, 'full.sql');
 
-    const command = `mysqldump --host=${this.config.host} --port=${this.config.port} --user=${this.config.username} ${this.config.database} > "${dumpFile}"`;
+    const command = `mysqldump --column-statistics=0 --host=${this.config.host} --port=${this.config.port} --user=${this.config.username} ${this.config.database} > "${dumpFile}"`;
 
     // bảo mật mật khẩu qua env variable để tránh lộ mk trong command line
     await execAsync(command, {
@@ -89,7 +89,7 @@ export class MySQLDriver implements DatabaseDriver {
     // just with the table name appended so mysqldump only exports that table.
     for (const table of tables) {
       const tableFile = path.join(dbDir, `${table}.sql`);
-      const tableCommand = `mysqldump --host=${this.config.host} --port=${this.config.port} --user=${this.config.username} ${this.config.database} ${table} > "${tableFile}"`;
+      const tableCommand = `mysqldump --column-statistics=0 --host=${this.config.host} --port=${this.config.port} --user=${this.config.username} ${this.config.database} ${table} > "${tableFile}"`;
 
       await execAsync(tableCommand, {
         env: { ...process.env, MYSQL_PWD: this.config.password },
@@ -190,7 +190,7 @@ export class MySQLDriver implements DatabaseDriver {
     const snapshotFile = path.join(targetDir, `snapshot-${timestamp}`);
 
     // write everything to snapshotFile
-    const command = `mysqldump --host=${this.config.host} --port=${this.config.port} --user=${this.config.username} ${this.config.database} > "${snapshotFile}"`;
+    const command = `mysqldump --column-statistics=0 --host=${this.config.host} --port=${this.config.port} --user=${this.config.username} ${this.config.database} > "${snapshotFile}"`;
 
     await execAsync(command, {
       env: { ...process.env, MYSQL_PWD: this.config.password },
