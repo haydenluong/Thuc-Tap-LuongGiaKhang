@@ -1,19 +1,36 @@
 # React + TypeScript + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Dự án dùng Vite + React + TypeScript, có Tailwind CSS v4 và Puck (trình chỉnh sửa kéo-thả) để quản lý nội dung trang.
 
-Currently, two official plugins are available:
+## Cách chạy dự án
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+```bash
+npm install     # cài dependencies
+npm run dev     # chạy server phát triển (dev server)
+npm run build   # build (chạy tsc -b rồi vite build)
+npm run lint    # kiểm tra code bằng oxlint
+npm run preview # xem trước bản build
+```
+
+Sau khi chạy `npm run dev`, mở đường dẫn mà terminal in ra (thường là `http://localhost:5173`).
+
+## Chỉnh sửa nội dung bằng Puck
+
+Để vào trình chỉnh sửa Puck, thêm `/editor` vào sau đường dẫn của trang cần sửa:
+
+- Trang chủ (`/`) → `/editor`
+- Giới thiệu (`/gioi-thieu`) → `/gioi-thieu/editor`
+- Hội viên (`/hoi-vien`) → `/hoi-vien/editor`
+
+Mỗi trang lưu dữ liệu chỉnh sửa riêng trong `localStorage` của trình duyệt (không ảnh hưởng đến các trang khác).
 
 ## React Compiler
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+React Compiler chưa được kích hoạt trong template này vì ảnh hưởng đến hiệu năng lúc phát triển & build. Muốn thêm, xem [tài liệu này](https://react.dev/learn/react-compiler/installation).
 
-## Expanding the Oxlint configuration
+## Mở rộng cấu hình Oxlint
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
+Nếu đang phát triển một ứng dụng dùng cho production, nên kích hoạt các rule lint có nhận biết kiểu dữ liệu (type-aware) bằng cách cài `oxlint-tsgolint` và sửa file `.oxlintrc.json`:
 
 ```json
 {
@@ -29,4 +46,4 @@ If you are developing a production application, we recommend enabling type-aware
 }
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+Xem [tài liệu rule Oxlint](https://oxc.rs/docs/guide/usage/linter/rules) để biết đầy đủ danh sách rule và phân loại.

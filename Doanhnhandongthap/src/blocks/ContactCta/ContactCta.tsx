@@ -1,3 +1,6 @@
+import type { ReactNode } from "react";
+import { getBackgroundStyle, type SectionBackground } from "../shared/background";
+
 export type ContactPill = {
   icon: string;
   label: string;
@@ -5,25 +8,20 @@ export type ContactPill = {
 };
 
 export type ContactCtaProps = {
-  title: string;
+  title: ReactNode;
   pills: ContactPill[];
   registerLabel: string;
-  // Nền gốc là 1 gradient 4-điểm-dừng chồng lên 1 ảnh — không vừa khuôn SectionBackground
-  // (vốn chỉ hỗ trợ 1 nền + 1 lớp phủ), nên giữ nguyên dạng chuỗi CSS để giống y bản gốc.
-  background: string;
+  background: SectionBackground;
 };
 
 export default function ContactCta({ title, pills, registerLabel, background }: ContactCtaProps) {
   return (
     <section
       className="relative overflow-hidden pt-[100px] pb-[160px] text-center"
-      style={{ background }}
+      style={getBackgroundStyle(background)}
     >
       <div className="relative z-[2] w-full max-w-[90%] mx-auto">
-        <h2
-          className="text-2xl font-extrabold leading-[1.5] text-[#0B5077]"
-          dangerouslySetInnerHTML={{ __html: title }}
-        />
+        <h2 className="text-2xl font-extrabold leading-[1.5] text-[#0B5077]">{title}</h2>
 
         <div className="my-[45px] flex flex-wrap justify-center gap-[30px]">
           {pills.map((pill, i) => (

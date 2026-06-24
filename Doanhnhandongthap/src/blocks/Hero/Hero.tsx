@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { getBackgroundStyle, type SectionBackground } from "../shared/background";
 import { getButtonStyle, type ButtonStyle } from "../shared/buttonStyle";
 
@@ -14,7 +15,7 @@ export type HeroCard = {
 export type HeroProps = {
   subtitle: string;
   title: string;
-  description: string;
+  description: ReactNode;
   ctaTargetId: string;
   background: SectionBackground;
   card: HeroCard;
@@ -74,11 +75,9 @@ export default function Hero({
               {title}
             </h1>
 
-            <div
-              className="leading-[1.7]"
-              style={{ color: card.textColor, fontSize: card.fontSize }}
-              dangerouslySetInnerHTML={{ __html: description }}
-            />
+            <div className="leading-[1.7]" style={{ color: card.textColor, fontSize: card.fontSize }}>
+              {description}
+            </div>
           </div>
 
           <button

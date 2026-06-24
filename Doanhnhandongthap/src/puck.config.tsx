@@ -7,6 +7,10 @@ import StatsSection, { type StatsSectionProps } from "./blocks/StatsSection/Stat
 import NewsSection, { type NewsSectionProps } from "./blocks/NewsSection/NewsSection";
 import ValuesSection, {type ValuesSectionProps} from "./blocks/ValuesSection/ValuesSection";
 import ContactCta, { type ContactCtaProps } from "./blocks/ContactCta/ContactCta";
+import IntroSection, { type IntroSectionProps } from "./blocks/IntroSection/IntroSection";
+import MemberSection, { type MemberSectionProps } from "./blocks/MemberSection/MemberSection";
+import Header, { type HeaderProps } from "./blocks/Header/Header";
+import Footer, { type FooterProps } from "./blocks/Footer/Footer";
 import { alignmentField } from "./blocks/shared/alignment";
 import { buttonStyleField } from "./blocks/shared/buttonStyle";
 import { cardStyleField } from "./blocks/shared/cardStyle";
@@ -30,14 +34,161 @@ const backgroundField = {
       ],
     },
     color: { type: "text" as const, label: "Màu nền" },
-    gradientFrom: { type: "text" as const, label: "Gradient từ" },
+    gradientFrom: { type: "text" as const, label: "Gradient từ (vd: #fff hoặc rgba(...) 0%)" },
+    gradientVia: { type: "text" as const, label: "Gradient giữa 1 (tuỳ chọn)" },
+    gradientVia2: { type: "text" as const, label: "Gradient giữa 2 (tuỳ chọn)" },
     gradientTo: { type: "text" as const, label: "Gradient đến" },
-    gradientDirection: { type: "text" as const, label: "Hướng gradient (vd: to bottom)" },
+    gradientDirection: { type: "text" as const, label: "Hướng gradient (vd: to bottom, 180deg)" },
+    gradient2From: { type: "text" as const, label: "Gradient phụ - từ (tuỳ chọn)" },
+    gradient2Via: { type: "text" as const, label: "Gradient phụ - giữa (tuỳ chọn)" },
+    gradient2To: { type: "text" as const, label: "Gradient phụ - đến (tuỳ chọn)" },
+    gradient2Direction: { type: "text" as const, label: "Hướng gradient phụ" },
     imageUrl: { type: "text" as const, label: "URL ảnh nền" },
     gifUrl: { type: "text" as const, label: "URL GIF nền" },
     opacity: { type: "number" as const, label: "Độ mờ", min: 0, max: 1, step: 0.1 },
-    overlayUrl: { type: "text" as const, label: "URL ảnh/GIF phủ lên nền" },
+    overlayUrl: { type: "text" as const, label: "URL ảnh/GIF phủ lên nền (trộn màu)" },
     overlayBlendMode: { type: "text" as const, label: "Kiểu trộn màu (vd: screen)" },
+    baseImageUrl: { type: "text" as const, label: "Ảnh nền dưới cùng (dưới gradient, tuỳ chọn)" },
+    baseImagePosition: { type: "text" as const, label: "Vị trí ảnh nền dưới cùng (vd: right center)" },
+  },
+};
+
+// Header/Footer là chrome dùng chung mọi trang — sửa qua panel "Root" trong Puck, không phải block kéo-thả.
+const headerField = {
+  type: "object" as const,
+  label: "Header",
+  objectFields: {
+    logo: {
+      type: "object" as const,
+      label: "Logo",
+      objectFields: {
+        imageUrl: { type: "text" as const, label: "URL ảnh logo" },
+        imageAlt: { type: "text" as const, label: "Alt text" },
+        link: { type: "text" as const, label: "Đường dẫn khi click logo" },
+        lineGap: { type: "number" as const, label: "Khoảng cách 2 dòng chữ (px)" },
+        lines: {
+          type: "array" as const,
+          label: "Các dòng chữ cạnh logo",
+          arrayFields: {
+            text: { type: "text" as const, label: "Nội dung" },
+            fontSize: { type: "text" as const, label: "Cỡ chữ" },
+            color: { type: "text" as const, label: "Màu chữ" },
+            align: {
+              type: "select" as const,
+              label: "Căn chỉnh",
+              options: [
+                { label: "Trái", value: "left" },
+                { label: "Giữa", value: "center" },
+                { label: "Phải", value: "right" },
+              ],
+            },
+          },
+          getItemSummary: (item: { text: string }) => item.text,
+        },
+      },
+    },
+    menu: {
+      type: "array" as const,
+      label: "Menu điều hướng",
+      arrayFields: {
+        id: { type: "text" as const, label: "ID" },
+        label: { type: "text" as const, label: "Nhãn hiển thị" },
+        url: { type: "text" as const, label: "Đường dẫn" },
+      },
+      getItemSummary: (item: { label: string }) => item.label,
+    },
+    styles: {
+      type: "object" as const,
+      label: "Kiểu hiển thị",
+      objectFields: {
+        transparentOnHome: {
+          type: "radio" as const,
+          label: "Trong suốt ở trang chủ (trước khi cuộn)",
+          options: [{ label: "Có", value: true }, { label: "Không", value: false }],
+        },
+        nonHomeBgColor: { type: "text" as const, label: "Màu nền (trang không phải trang chủ)" },
+        scrolledBgColor: { type: "text" as const, label: "Màu nền khi đã cuộn" },
+        blurAmount: { type: "text" as const, label: "Độ mờ kính khi đã cuộn (vd: 18px)" },
+        headerHeight: { type: "text" as const, label: "Chiều cao header" },
+        textColor: { type: "text" as const, label: "Màu chữ menu" },
+        hoverColor: { type: "text" as const, label: "Màu chữ khi hover" },
+        menuFontSize: { type: "text" as const, label: "Cỡ chữ menu" },
+        menuFontWeight: { type: "text" as const, label: "Độ đậm chữ menu" },
+        gap: { type: "number" as const, label: "Khoảng cách giữa các mục menu (px)" },
+        scrolledBorderBottom: { type: "text" as const, label: "Viền dưới khi đã cuộn" },
+        scrolledShadow: { type: "text" as const, label: "Đổ bóng khi đã cuộn" },
+      },
+    },
+  },
+};
+
+const footerField = {
+  type: "object" as const,
+  label: "Footer",
+  objectFields: {
+    logoUrl: { type: "text" as const, label: "URL ảnh logo" },
+    logoAlt: { type: "text" as const, label: "Alt text" },
+    brandLines: {
+      type: "array" as const,
+      label: "Các dòng tên đơn vị",
+      arrayFields: { value: { type: "text" as const, label: "Nội dung" } },
+    },
+    officeLabel: { type: "text" as const, label: "Nhãn 'Trụ sở chính'" },
+    contacts: {
+      type: "array" as const,
+      label: "Thông tin liên hệ",
+      arrayFields: {
+        icon: {
+          type: "select" as const,
+          label: "Icon",
+          options: [
+            { label: "Địa chỉ", value: "location" },
+            { label: "Email", value: "email" },
+            { label: "Điện thoại", value: "phone" },
+          ],
+        },
+        text: { type: "textarea" as const, label: "Nội dung" },
+      },
+      getItemSummary: (item: { text: string }) => item.text,
+    },
+    linkColumns: {
+      type: "array" as const,
+      label: "Cột liên kết",
+      arrayFields: {
+        title: { type: "text" as const, label: "Tiêu đề cột" },
+        links: {
+          type: "array" as const,
+          label: "Danh sách liên kết",
+          arrayFields: {
+            label: { type: "text" as const, label: "Chữ hiển thị" },
+            href: { type: "text" as const, label: "Đường dẫn" },
+          },
+          getItemSummary: (item: { label: string }) => item.label,
+        },
+      },
+      getItemSummary: (item: { title: string }) => item.title,
+    },
+    copyrightText: { type: "text" as const, label: "Dòng bản quyền" },
+    socialLinks: {
+      type: "array" as const,
+      label: "Liên kết mạng xã hội",
+      arrayFields: {
+        icon: {
+          type: "select" as const,
+          label: "Icon",
+          options: [
+            { label: "Facebook", value: "facebook" },
+            { label: "TikTok", value: "tiktok" },
+            { label: "YouTube", value: "youtube" },
+            { label: "LinkedIn", value: "linkedin" },
+          ],
+        },
+        href: { type: "text" as const, label: "Đường dẫn" },
+      },
+      getItemSummary: (item: { icon: string }) => item.icon,
+    },
+    background: { type: "text" as const, label: "Nền footer (css background)" },
+    decorativeImageUrl: { type: "text" as const, label: "URL ảnh hoa văn trang trí (tuỳ chọn)" },
   },
 };
 
@@ -50,13 +201,20 @@ export type Props = {
   NewsSection: NewsSectionProps;
   ValuesSection: ValuesSectionProps;
   ContactCta: ContactCtaProps;
+  IntroSection: IntroSectionProps;
+  MemberSection: MemberSectionProps;
+};
+
+export type RootProps = {
+  header: Omit<HeaderProps, "isHome">;
+  footer: FooterProps;
 };
 
 // Config — đăng ký components với label + fields + defaultProps + render.
-export const puckConfig: Config<Props> = {
+export const puckConfig: Config<Props, RootProps> = {
   components: {
     Hero: {
-      label: "Hero Banner",
+      label: "Banner Trang Chủ",
       fields: {
         subtitle: { type: "text", label: "Nhãn phụ" },
         title: { type: "text", label: "Tiêu đề" },
@@ -94,10 +252,11 @@ export const puckConfig: Config<Props> = {
         ctaTargetId: "lien-he",
         background: {
           type: "gradient",
-          gradientFrom: "#a8dfff",
-          gradientVia: "#cdeeff",
-          gradientTo: "#3399ff",
-          gradientDirection: "to top",
+          gradientFrom: "#a8dfff 0%",
+          gradientVia: "#cdeeff 25%",
+          gradientVia2: "#66aaff 60%",
+          gradientTo: "#3399ff 100%",
+          gradientDirection: "0deg",
           overlayUrl: "https://webdemo.hexagon.xyz/medias/hieuunghero.webp",
           overlayBlendMode: "screen",
         },
@@ -122,7 +281,7 @@ export const puckConfig: Config<Props> = {
     },
 
     SponsorBar: {
-      label: "Thanh hội viên",
+      label: "Dải Logo Hội Viên",
       fields: {
         title: { type: "text", label: "Tiêu đề" },
         logos: {
@@ -174,7 +333,7 @@ export const puckConfig: Config<Props> = {
     },
 
     AboutSection: {
-      label: "Giới thiệu & Cơ cấu tổ chức",
+      label: "Giới Thiệu & Cơ Cấu Tổ Chức",
       fields: {
         leftCard: {
           type: "object",
@@ -361,7 +520,7 @@ export const puckConfig: Config<Props> = {
     },
 
     TeamsSection: {
-      label: "Các ban chuyên môn",
+      label: "Các Ban Chuyên Môn",
       fields: {
         title: { type: "text", label: "Tiêu đề" },
         subtitle: { type: "text", label: "Tiêu đề phụ" },
@@ -437,7 +596,7 @@ export const puckConfig: Config<Props> = {
     },
 
     StatsSection: {
-      label: "Hành trình kiến tạo",
+      label: "Hành Trình & Số Liệu",
       fields: {
         title: { type: "text", label: "Tiêu đề" },
         bgLoopUrl: { type: "text", label: "URL ảnh hoa văn nền" },
@@ -477,7 +636,7 @@ export const puckConfig: Config<Props> = {
     },
 
     NewsSection: {
-      label: "Tin tức & sự kiện",
+      label: "Tin Tức & Sự Kiện",
       fields: {
         title: { type: "text", label: "Tiêu đề" },
         viewMoreLabel: { type: "text", label: "Chữ xem thêm" },
@@ -572,7 +731,7 @@ export const puckConfig: Config<Props> = {
     },
 
     ValuesSection: {
-      label: "Giá trị khi tham gia",
+      label: "Giá Trị Cộng Đồng",
       fields: {
         title: { type: "text", label: "Tiêu đề" },
         viewMoreLabel: { type: "text", label: "Chữ xem thêm" },
@@ -588,7 +747,7 @@ export const puckConfig: Config<Props> = {
           },
           getItemSummary: (item) => item.title,
         },
-        background: { type: "textarea", label: "Nền (CSS background, nhiều lớp)" },
+        background: backgroundField,
         titleAlign: alignmentField,
         cardStyle: cardStyleField,
       },
@@ -596,10 +755,19 @@ export const puckConfig: Config<Props> = {
         title: "GIÁ TRỊ KHI THAM GIA CỘNG ĐỒNG",
         viewMoreLabel: "Xem thêm",
         viewMoreHref: "#",
-        background:
-          "linear-gradient(180deg, rgba(242,244,255,0.80) 0%, transparent 35%, rgba(240,185,252,0.88) 100%), " +
-          "linear-gradient(to right, rgba(200,245,255,0.95) 0%, rgba(216,229,255,0.70) 50%, rgba(247,201,252,0.20) 100%), " +
-          "url('https://webdemo.hexagon.xyz/medias/bg-giatri.png') right center / cover no-repeat",
+        background: {
+          type: "gradient",
+          gradientFrom: "rgba(242,244,255,0.80) 0%",
+          gradientVia: "transparent 35%",
+          gradientTo: "rgba(240,185,252,0.88) 100%",
+          gradientDirection: "180deg",
+          gradient2From: "rgba(200,245,255,0.95) 0%",
+          gradient2Via: "rgba(216,229,255,0.70) 50%",
+          gradient2To: "rgba(247,201,252,0.20) 100%",
+          gradient2Direction: "to right",
+          baseImageUrl: "https://webdemo.hexagon.xyz/medias/bg-giatri.png",
+          baseImagePosition: "right center",
+        },
         titleAlign: "left",
         cardStyle: {
           borderRadius: "70px 15px 70px 15px",
@@ -631,7 +799,7 @@ export const puckConfig: Config<Props> = {
     },
 
     ContactCta: {
-      label: "Quan tâm & hợp tác",
+      label: "Liên Hệ & Hợp Tác",
       fields: {
         title: { type: "richtext", label: "Tiêu đề" },
         pills: {
@@ -645,7 +813,7 @@ export const puckConfig: Config<Props> = {
           getItemSummary: (item) => item.label,
         },
         registerLabel: { type: "text", label: "Chữ nút đăng ký" },
-        background: { type: "textarea", label: "Nền (CSS background, nhiều lớp)" },
+        background: backgroundField,
       },
       defaultProps: {
         title:
@@ -655,11 +823,133 @@ export const puckConfig: Config<Props> = {
           { icon: "📞", label: "1800 1568", href: "tel:18001568" },
         ],
         registerLabel: "Đăng ký hội viên",
-        background:
-          "linear-gradient(180deg, rgba(240,185,252,0.95) 0%, rgba(236,182,250,0.45) 22%, rgba(228,178,248,0.20) 58%, rgba(232,180,248,1.00) 100%), " +
-          "url('https://webdemo.hexagon.xyz/medias/bg-lienhe.png') center center / cover no-repeat",
+        background: {
+          type: "gradient",
+          gradientFrom: "rgba(240,185,252,0.95) 0%",
+          gradientVia: "rgba(236,182,250,0.45) 22%",
+          gradientVia2: "rgba(228,178,248,0.20) 58%",
+          gradientTo: "rgba(232,180,248,1.00) 100%",
+          gradientDirection: "180deg",
+          baseImageUrl: "https://webdemo.hexagon.xyz/medias/bg-lienhe.png",
+          baseImagePosition: "center center",
+        },
       },
       render: (props) => <ContactCta {...props} />,
+    },
+
+    IntroSection: {
+      label: "Giới Thiệu Tổng Quan",
+      fields: {
+        title: { type: "text", label: "Tiêu đề" },
+        imageUrl: { type: "text", label: "URL ảnh" },
+        imageAlt: { type: "text", label: "Alt text" },
+        contentTitle: { type: "text", label: "Tiêu đề nội dung" },
+        paragraphs: {
+          type: "array",
+          label: "Đoạn văn",
+          arrayFields: { value: { type: "textarea", label: "Nội dung" } },
+        },
+        visionLabel: { type: "text", label: "Nhãn tầm nhìn" },
+        visionText: { type: "textarea", label: "Nội dung tầm nhìn" },
+        missionLabel: { type: "text", label: "Nhãn sứ mệnh" },
+        missionText: { type: "textarea", label: "Nội dung sứ mệnh" },
+        stats: {
+          type: "array",
+          label: "Số liệu",
+          arrayFields: {
+            number: { type: "text", label: "Số liệu" },
+            desc: { type: "text", label: "Mô tả" },
+          },
+          getItemSummary: (item) => item.number,
+        },
+        background: backgroundField,
+      },
+      defaultProps: {
+        title: "GIỚI THIỆU DOANH NHÂN ĐỒNG THÁP",
+        imageUrl: "https://images.unsplash.com/photo-1520607162513-77705c0f0d4a",
+        imageAlt: "Doanh nhân Đồng Tháp",
+        contentTitle: "Kết nối – Đồng hành – Phát triển",
+        paragraphs: [
+          { value: "Cộng đồng Doanh nhân Đồng Tháp hướng đến việc xây dựng môi trường kết nối giữa các doanh nghiệp, thúc đẩy hợp tác và tạo ra nhiều giá trị bền vững cho địa phương." },
+          { value: "Với tinh thần đổi mới, sáng tạo và phát triển lâu dài, cộng đồng doanh nhân luôn đóng vai trò quan trọng trong việc thúc đẩy kinh tế, hỗ trợ khởi nghiệp và nâng cao năng lực cạnh tranh." },
+        ] as unknown as string[],
+        visionLabel: "Tầm nhìn:",
+        visionText: "Xây dựng mạng lưới doanh nhân năng động, hiện đại và hội nhập.",
+        missionLabel: "Sứ mệnh:",
+        missionText: "Kết nối doanh nghiệp – chia sẻ tri thức – tạo giá trị phát triển bền vững.",
+        stats: [
+          { number: "500+", desc: "Doanh nghiệp tham gia" },
+          { number: "50+", desc: "Sự kiện kết nối mỗi năm" },
+          { number: "100%", desc: "Hướng đến phát triển bền vững" },
+        ],
+        background: { type: "color", color: "#ffffff" },
+      },
+      render: (props) => (
+        <IntroSection {...props} paragraphs={(props.paragraphs as unknown as { value: string }[]).map((p) => p.value)} />
+      ),
+    },
+
+    MemberSection: {
+      label: "Thông Tin Hội Viên",
+      fields: {
+        title: { type: "text", label: "Tiêu đề" },
+        imageUrl: { type: "text", label: "URL ảnh" },
+        imageAlt: { type: "text", label: "Alt text" },
+        contentTitle: { type: "text", label: "Tiêu đề nội dung" },
+        paragraphs: {
+          type: "array",
+          label: "Đoạn văn",
+          arrayFields: { value: { type: "textarea", label: "Nội dung" } },
+        },
+        benefitsTitle: { type: "text", label: "Tiêu đề quyền lợi" },
+        benefits: {
+          type: "array",
+          label: "Danh sách quyền lợi",
+          arrayFields: { value: { type: "text", label: "Nội dung" } },
+        },
+        stats: {
+          type: "array",
+          label: "Số liệu",
+          arrayFields: {
+            number: { type: "text", label: "Số liệu" },
+            label: { type: "text", label: "Nhãn" },
+          },
+          getItemSummary: (item) => item.number,
+        },
+        background: backgroundField,
+      },
+      defaultProps: {
+        title: "HỘI VIÊN",
+        imageUrl: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d",
+        imageAlt: "Hội viên",
+        contentTitle: "Cộng đồng doanh nhân cùng phát triển",
+        paragraphs: [
+          { value: "Hội viên là lực lượng nòng cốt tạo nên sự kết nối, chia sẻ và phát triển trong cộng đồng doanh nghiệp Đồng Tháp." },
+          { value: "Việc tham gia hội viên mở ra cơ hội mở rộng mạng lưới, trao đổi kinh nghiệm, tiếp cận chương trình hỗ trợ và đồng hành trong các hoạt động xúc tiến thương mại." },
+        ] as unknown as string[],
+        benefitsTitle: "Quyền lợi hội viên",
+        benefits: [
+          { value: "Tham gia các chương trình kết nối doanh nghiệp" },
+          { value: "Tiếp cận hoạt động đào tạo và hội thảo chuyên đề" },
+          { value: "Nhận thông tin thị trường và cơ hội hợp tác" },
+          { value: "Tham gia các hoạt động cộng đồng doanh nhân" },
+          { value: "Đồng hành cùng các chương trình phát triển địa phương" },
+        ] as unknown as string[],
+        stats: [
+          { number: "800+", label: "Hội viên" },
+          { number: "120+", label: "Đối tác" },
+          { number: "40+", label: "Sự kiện / năm" },
+          { number: "12", label: "Nhóm kết nối" },
+        ],
+        background: { type: "color", color: "#ffffff" },
+      },
+      render: (props) => (
+        <MemberSection
+          {...props}
+          paragraphs={(props.paragraphs as unknown as { value: string }[]).map((p) => p.value)}
+          benefits={(props.benefits as unknown as { value: string }[]).map((b) => b.value)}
+        />
+      ),
     },
   },
 
@@ -677,10 +967,122 @@ export const puckConfig: Config<Props> = {
         "ContactCta",
       ],
     },
+    "Giới thiệu": {
+      title: "Giới thiệu",
+      components: ["IntroSection"],
+    },
+    "Hội viên": {
+      title: "Hội viên",
+      components: ["MemberSection"],
+    },
   },
 
   root: {
-    render: ({ children }) => <div className="min-h-screen">{children}</div>,
+    fields: {
+      header: headerField,
+      footer: footerField,
+    },
+    defaultProps: {
+      header: {
+        logo: {
+          imageUrl: "https://webdemo.hexagon.xyz/medias/logo 2.png",
+          imageAlt: "Logo",
+          link: "/",
+          lineGap: 8,
+          lines: [
+            { text: "CÂU LẠC BỘ DOANH NHÂN ĐỒNG THÁP ", fontSize: "13px", color: "#ffffff", align: "left" },
+            { text: "TẠI TP.HỒ CHÍ MINH", fontSize: "13px", color: "#ffffff", align: "center" },
+          ],
+        },
+        menu: [
+          { id: "home", label: "Trang chủ", url: "/" },
+          { id: "about", label: "Giới thiệu", url: "/gioi-thieu" },
+          { id: "services", label: "Hội viên", url: "/hoi-vien" },
+          { id: "support", label: "Hoạt động Ban", url: "/" },
+          { id: "menu_1782099382501", label: "Tin tức & Sự kiện", url: "#tin-tuc" },
+          { id: "menu_1782099397978", label: "Liên hệ", url: "#lien-he" },
+        ],
+        styles: {
+          transparentOnHome: true,
+          nonHomeBgColor: "#2465B3",
+          scrolledBgColor: "#002F96",
+          blurAmount: "18px",
+          headerHeight: "80px",
+          textColor: "#e5e7eb",
+          hoverColor: "#E91E8C",
+          menuFontSize: "15px",
+          menuFontWeight: "500",
+          gap: 32,
+          scrolledBorderBottom: "1px solid rgba(255, 255, 255, 0.1)",
+          scrolledShadow: "0 4px 24px rgba(0, 0, 0, 0.18)",
+        },
+      },
+      footer: {
+        logoUrl: "https://webdemo.hexagon.xyz/medias/logo 2.png",
+        logoAlt: "Logo CLB Doanh Nhân Đồng Tháp",
+        brandLines: [
+          { value: "CÂU LẠC BỘ DOANH NHÂN ĐỒNG THÁP" },
+          { value: "TẠI TP. HỒ CHÍ MINH" },
+        ] as unknown as string[],
+        officeLabel: "TRỤ SỞ CHÍNH",
+        contacts: [
+          { icon: "location", text: "Phòng Đồng Tháp, HungHau Campus, Trường Đại học Văn Hiến, Đại lộ Nguyễn Văn Linh, Khu đô thị Nam Thành Phố, Thành phố Hồ Chí Minh" },
+          { icon: "email", text: "Email: info@dte.hunghau.vn" },
+          { icon: "phone", text: "Hotline: 1800 1568" },
+        ],
+        linkColumns: [
+          {
+            title: "Page Links",
+            links: [
+              { label: "Home", href: "/" },
+              { label: "News & Events", href: "#tin-tuc" },
+              { label: "About Us", href: "/gioi-thieu" },
+              { label: "Các lĩnh vực hoạt động", href: "/" },
+              { label: "Doanh nghiệp hội viên", href: "/hoi-vien" },
+              { label: "Đăng kí", href: "#lien-he" },
+              { label: "Hoạt động Ban", href: "/" },
+            ],
+          },
+          {
+            title: "Other",
+            links: [
+              { label: "MYH", href: "#" },
+              { label: "MYC", href: "#" },
+              { label: "HHF", href: "#" },
+              { label: "HHE", href: "#" },
+              { label: "HHA", href: "#" },
+              { label: "COWE", href: "#" },
+              { label: "HHN", href: "#" },
+              { label: "HYV", href: "#" },
+            ],
+          },
+        ],
+        copyrightText: "Copyright © CLB Doanh Nhân Đồng Tháp. All rights reserved.",
+        socialLinks: [
+          { icon: "facebook", href: "#" },
+          { icon: "tiktok", href: "#" },
+          { icon: "youtube", href: "#" },
+          { icon: "linkedin", href: "#" },
+        ],
+        background: "linear-gradient(180deg, #e8b4f8 0%, #c9b8f5 25%, #8b9ef0 60%, #6a7be8 100%)",
+        decorativeImageUrl: "",
+      },
+    },
+    render: ({ children, header, footer }) => {
+      const isHome = typeof window !== "undefined" && window.location.pathname === "/";
+      return (
+        <div className="min-h-screen">
+          <Header {...header} isHome={isHome} />
+          {/* Header fixed nên không chiếm chỗ trong layout. Trang chủ: Hero cố ý nằm dưới header trong suốt nên không bù margin.
+              Các trang khác: header có nền đặc ngay từ đầu nên cần margin-top bằng chiều cao header để không bị che. */}
+          <main style={{ marginTop: isHome ? 0 : header.styles.headerHeight }}>{children}</main>
+          <Footer
+            {...footer}
+            brandLines={(footer.brandLines as unknown as { value: string }[]).map((l) => l.value)}
+          />
+        </div>
+      );
+    },
   },
 };
 

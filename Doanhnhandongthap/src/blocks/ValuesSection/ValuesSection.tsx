@@ -1,3 +1,4 @@
+import { getBackgroundStyle, type SectionBackground } from "../shared/background";
 import { alignClass, type Alignment } from "../shared/alignment";
 import { type CardStyle } from "../shared/cardStyle";
 
@@ -13,9 +14,7 @@ export type ValuesSectionProps = {
   viewMoreLabel: string;
   viewMoreHref: string;
   cards: ValueCard[];
-  // Nền gốc là 2 gradient (1 dọc, 1 ngang) chồng lên 1 ảnh — không vừa khuôn SectionBackground
-  // (vốn chỉ hỗ trợ 1 nền + 1 lớp phủ), nên giữ nguyên dạng chuỗi CSS để giống y bản gốc.
-  background: string;
+  background: SectionBackground;
   titleAlign: Alignment;
   cardStyle: CardStyle;
 };
@@ -37,7 +36,7 @@ export default function ValuesSection({
   cardStyle,
 }: ValuesSectionProps) {
   return (
-    <section className="relative pt-20 pb-[90px]" style={{ background }}>
+    <section className="relative pt-20 pb-[90px]" style={getBackgroundStyle(background)}>
       <div className="relative z-[1] w-full max-w-[90%] mx-auto">
         <div className="mb-12 flex items-center justify-between">
           <h2 className={`text-2xl font-extrabold leading-[1.3] text-[#0b4c8c] ${alignClass(titleAlign)}`}>

@@ -5,45 +5,60 @@ export type SectionBackground = {
   color?: string;
   gradientFrom?: string;
   gradientVia?: string;
+  gradientVia2?: string;
   gradientTo?: string;
   gradientDirection?: string;
+  // Gradient phụ, chồng NGAY DƯỚI gradient chính (vd nền values-section: 1 gradient dọc + 1 gradient ngang).
+  gradient2From?: string;
+  gradient2Via?: string;
+  gradient2To?: string;
+  gradient2Direction?: string;
   imageUrl?: string;
   gifUrl?: string;
   opacity?: number;
-  // Lớp GIF/ảnh phủ lên trên nền chính (màu/gradient/ảnh), trộn màu qua blend mode —
-  // tái tạo đúng cách hero-section gốc kết hợp ảnh + gradient (background-blend-mode: screen).
+  // Ảnh/GIF phủ TRÊN CÙNG nền chính, trộn màu qua blend mode
+  // (vd hero-section: ảnh + gradient, background-blend-mode: screen).
   overlayUrl?: string;
   overlayBlendMode?: string;
+  // Ảnh nằm DƯỚI CÙNG, dưới mọi lớp gradient, chồng theo alpha thường (không blend mode) —
+  // vd values-section/contact-cta-section: gradient(s) phủ lên 1 ảnh nền.
+  baseImageUrl?: string;
+  baseImagePosition?: string;
 };
+
+function gradientLayer(from?: string, via?: string, via2?: string, to?: string, direction = "to bottom") {
+  const stops = [from, via, via2, to].filter(Boolean).join(", ");
+  return stops ? `linear-gradient(${direction}, ${stops})` : "";
+}
 
 export function getBackgroundStyle(bg: SectionBackground): CSSProperties {
   const style: CSSProperties = {};
-  let baseLayer = "";
 
   if (bg.type === "color") style.backgroundColor = bg.color;
-  if (bg.type === "image" && bg.imageUrl) {
-    baseLayer = `url('${bg.imageUrl}')`;
-    style.backgroundSize = "cover";
-    style.backgroundPosition = "center";
-  }
-  if (bg.type === "gif" && bg.gifUrl) {
-    baseLayer = `url('${bg.gifUrl}')`;
-    style.backgroundSize = "cover";
-    style.backgroundPosition = "center";
-  }
+
+  const layers: string[] = [];
+
+  if (bg.overlayUrl) layers.push(`url('${bg.overlayUrl}')`);
+
   if (bg.type === "gradient") {
-    const stops = [bg.gradientFrom, bg.gradientVia, bg.gradientTo].filter(Boolean).join(", ");
-    baseLayer = `linear-gradient(${bg.gradientDirection || "to bottom"}, ${stops})`;
+    const g1 = gradientLayer(bg.gradientFrom, bg.gradientVia, bg.gradientVia2, bg.gradientTo, bg.gradientDirection);
+    if (g1) layers.push(g1);
+    const g2 = gradientLayer(bg.gradient2From, bg.gradient2Via, undefined, bg.gradient2To, bg.gradient2Direction);
+    if (g2) layers.push(g2);
   }
 
-  if (bg.overlayUrl) {
-    style.backgroundImage = baseLayer ? `url('${bg.overlayUrl}'), ${baseLayer}` : `url('${bg.overlayUrl}')`;
-    style.backgroundBlendMode = (bg.overlayBlendMode || "screen") as CSSProperties["backgroundBlendMode"];
+  if (bg.type === "image" && bg.imageUrl) layers.push(`url('${bg.imageUrl}')`);
+  if (bg.type === "gif" && bg.gifUrl) layers.push(`url('${bg.gifUrl}')`);
+  if (bg.baseImageUrl) layers.push(`url('${bg.baseImageUrl}')`);
+
+  if (layers.length) {
+    style.backgroundImage = layers.join(", ");
     style.backgroundSize = "cover";
-    style.backgroundPosition = "center";
-  } else if (baseLayer) {
-    if (bg.type === "gradient") style.background = baseLayer;
-    else style.backgroundImage = baseLayer;
+    style.backgroundPosition = bg.baseImagePosition || "center";
+    style.backgroundRepeat = "no-repeat";
+    if (bg.overlayUrl) {
+      style.backgroundBlendMode = (bg.overlayBlendMode || "screen") as CSSProperties["backgroundBlendMode"];
+    }
   }
 
   if (bg.opacity !== undefined) style.opacity = bg.opacity;
