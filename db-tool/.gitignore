@@ -4,6 +4,8 @@ dist/
 *.log
 config/db.config.json
 
+learn.md
+
 # Runtime output folders (keep structure, ignore content)
 Logs/*
 Data/*
