@@ -1,6 +1,7 @@
 import { getBackgroundStyle, type SectionBackground } from "../shared/background";
 import { alignClass, type Alignment } from "../shared/alignment";
 import { type CardStyle } from "../shared/cardStyle";
+import { cornerRadiusToCss } from "../shared/cornerRadius";
 import { getButtonStyle, type ButtonStyle } from "../shared/buttonStyle";
 import { paddingYStyle, type SectionSpacing } from "../shared/spacing";
 
@@ -46,7 +47,7 @@ export default function TeamsSection({
             <div
               key={i}
               className="group flex min-h-[270px] w-full grow-0 shrink basis-[360px] flex-col items-center bg-gradient-to-b from-[#2CB2FF] to-[#0B5077] p-6 shadow-[0_15px_35px_rgba(12,74,115,0.25)] transition-all duration-300 hover:-translate-y-2 hover:bg-gradient-to-br hover:from-[#21adff] hover:to-[#0e5685] hover:shadow-[0_25px_45px_rgba(12,74,115,0.4)]"
-              style={{ borderRadius: cardStyle.borderRadius }}
+              style={{ borderRadius: cornerRadiusToCss(cardStyle.borderRadius) }}
             >
               <div className="mb-1 flex h-[100px] w-full items-center justify-center">
                 <img

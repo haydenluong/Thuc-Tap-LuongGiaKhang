@@ -2,6 +2,7 @@ import { getBackgroundStyle, type SectionBackground } from "../shared/background
 import { alignClass, type Alignment } from "../shared/alignment";
 import { type CardStyle } from "../shared/cardStyle";
 import { paddingYStyle, type SectionSpacing } from "../shared/spacing";
+import { cornerRadiusToCss } from "../shared/cornerRadius";
 
 export type NewsCard = {
   imageUrl: string;
@@ -54,7 +55,7 @@ export default function NewsSection({
               className={`group flex flex-col overflow-hidden border border-[#eef3f7] bg-white shadow-[0_10px_30px_rgba(0,0,0,0.04)] transition-all duration-300 hover:-translate-y-2 hover:border-[#dbeafe] hover:shadow-[0_15px_40px_rgba(0,0,0,0.08)] ${
                 card.large ? "col-span-6 md:col-span-3" : "col-span-3 md:col-span-2 min-h-[380px]"
               }`}
-              style={{ borderRadius: cardStyle.borderRadius }}
+              style={{ borderRadius: cornerRadiusToCss(cardStyle.borderRadius) }}
             >
               <div className={`relative w-full overflow-hidden ${card.large ? "h-[220px]" : "h-[170px]"}`}>
                 <img

@@ -1,7 +1,8 @@
 import type { CSSProperties } from "react";
+import { type CornerRadius, cornerRadiusField, cornerRadiusToCss } from "./cornerRadius";
 
 export type CardStyle = {
-  borderRadius: string;
+  borderRadius: CornerRadius;
   textColor: string;
   fontSize: string;
 };
@@ -10,7 +11,7 @@ export const cardStyleField = {
   type: "object" as const,
   label: "Kiểu thẻ",
   objectFields: {
-    borderRadius: { type: "text" as const, label: "Bo góc thẻ" },
+    borderRadius: cornerRadiusField,
     textColor: { type: "text" as const, label: "Màu chữ" },
     fontSize: { type: "text" as const, label: "Cỡ chữ" },
   },
@@ -18,7 +19,7 @@ export const cardStyleField = {
 
 export function getCardStyle(card: CardStyle): CSSProperties {
   return {
-    borderRadius: card.borderRadius,
+    borderRadius: cornerRadiusToCss(card.borderRadius),
     color: card.textColor,
     fontSize: card.fontSize,
   };

@@ -1,13 +1,11 @@
 import type { ReactNode } from "react";
 import { getBackgroundStyle, type SectionBackground } from "../shared/background";
 import { getButtonStyle, type ButtonStyle } from "../shared/buttonStyle";
+import { type CornerRadius, cornerRadiusToCss } from "../shared/cornerRadius";
 
 export type HeroCard = {
   position: "left" | "center" | "right";
-  radiusTopLeft: string;
-  radiusTopRight: string;
-  radiusBottomRight: string;
-  radiusBottomLeft: string;
+  radius: CornerRadius;
   textColor: string;
   fontSize: string;
 };
@@ -60,7 +58,7 @@ export default function Hero({
             shadow-[0_20px_50px_rgba(0,0,0,0.25)]
           "
           style={{
-            borderRadius: `${card.radiusTopLeft} ${card.radiusTopRight} ${card.radiusBottomRight} ${card.radiusBottomLeft}`,
+            borderRadius: cornerRadiusToCss(card.radius),
           }}
         >
           <div className="flex flex-col text-left gap-3">

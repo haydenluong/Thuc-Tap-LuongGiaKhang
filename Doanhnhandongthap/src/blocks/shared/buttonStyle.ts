@@ -1,10 +1,11 @@
 import type { CSSProperties } from "react";
+import { type CornerRadius, cornerRadiusField, cornerRadiusToCss } from "./cornerRadius";
 
 export type ButtonStyle = {
   label: string;
   bgColor: string;
   textColor: string;
-  borderRadius: string;
+  borderRadius: CornerRadius;
   fontSize: string;
 };
 
@@ -15,7 +16,7 @@ export const buttonStyleField = {
     label: { type: "text" as const, label: "Chữ trong nút" },
     bgColor: { type: "text" as const, label: "Màu nút" },
     textColor: { type: "text" as const, label: "Màu chữ nút" },
-    borderRadius: { type: "text" as const, label: "Bo góc nút" },
+    borderRadius: cornerRadiusField,
     fontSize: { type: "text" as const, label: "Cỡ chữ nút" },
   },
 };
@@ -24,7 +25,7 @@ export function getButtonStyle(button: Pick<ButtonStyle, "bgColor" | "textColor"
   return {
     backgroundColor: button.bgColor,
     color: button.textColor,
-    borderRadius: button.borderRadius,
+    borderRadius: cornerRadiusToCss(button.borderRadius),
     fontSize: button.fontSize,
   };
 }

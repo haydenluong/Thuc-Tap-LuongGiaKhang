@@ -36,7 +36,7 @@ export default function IntroSection({
     <section className="max-w-[1100px] mx-auto px-5 py-[60px]" style={getBackgroundStyle(background)}>
       <div className="mb-[50px] text-center">
         <h1 className="mb-2.5 text-[30px] md:text-[38px] font-bold text-[#0f5b94]">{title}</h1>
-        <div className="mx-auto h-1 w-[90px] rounded-[20px] bg-[#f7941d]" />
+        <hr className="mx-auto h-1 w-[90px] rounded-[20px] bg-[#f7941d]" />
       </div>
 
       <div className="grid grid-cols-1 items-center gap-[50px] md:grid-cols-2">

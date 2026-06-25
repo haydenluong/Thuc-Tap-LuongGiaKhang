@@ -1,6 +1,7 @@
 import { getBackgroundStyle, type SectionBackground } from "../shared/background";
 import { alignClass, type Alignment } from "../shared/alignment";
 import { type CardStyle } from "../shared/cardStyle";
+import { cornerRadiusToCss } from "../shared/cornerRadius";
 
 export type ValueCard = {
   iconUrl: string;
@@ -56,7 +57,7 @@ export default function ValuesSection({
             <div
               key={i}
               className={`flex w-[225px] h-[300px] flex-col items-center justify-start border border-white/82 bg-white/50 px-[22px] pt-[30px] pb-[26px] text-center shadow-[0_16px_40px_rgba(12,74,115,0.10)] backdrop-blur-[16px] transition-all duration-300 hover:-translate-y-2 hover:bg-white/70 hover:shadow-[0_22px_52px_rgba(12,74,115,0.16)] ${stackPositionClass[i]}`}
-              style={{ borderRadius: cardStyle.borderRadius }}
+              style={{ borderRadius: cornerRadiusToCss(cardStyle.borderRadius) }}
             >
               <div className="mb-[18px] flex h-[110px] w-[110px] shrink-0 items-center justify-center rounded-full bg-white shadow-[0_4px_20px_rgba(12,74,115,0.10)] transition-all duration-300 group-hover:scale-105">
                 <img src={card.iconUrl} alt={card.alt} className="h-[100px] w-[100px] object-contain" />

@@ -3,6 +3,7 @@ import { Puck, Render, type Data } from "@puckeditor/core";
 import "@puckeditor/core/puck.css";
 
 import { puckConfig } from "./puck.config";
+import { useState } from "react";
 
 type PageKey = "home" | "gioi-thieu" | "hoi-vien";
 
@@ -120,22 +121,48 @@ function loadData(page: PageKey): Data {
   };
 }
 
-function PuckPage({ page, editing }: { page: PageKey; editing: boolean }) {
-  const data = loadData(page);
+const pageTabs: { key: PageKey; label: string }[] = [
+  { key: "home", label: "Trang chủ" },
+  { key: "gioi-thieu", label: "Giới thiệu" },
+  { key: "hoi-vien", label: "Hội viên" },
+];
 
-  if (editing) {
-    return (
+// function để edit được cả 3 page trong cùng một trang edit
+function SubPageEditor() {
+  const [activePage, setActivePage] = useState<PageKey>("home");
+  return (
+    <>
+      <div className="flex gap-2 border-b border-gray-200 bg-white px-4 py-2">
+        {pageTabs.map((tab) => (
+          <button
+            key={tab.key}
+            onClick={() => setActivePage(tab.key)}
+            className={
+              activePage === tab.key
+                ? "cursor-pointer rounded-md bg-blue-600 px-4 py-2 text-sm font-semibold text-white"
+                : "cursor-pointer rounded-md px-4 py-2 text-sm font-semibold text-gray-600 hover:bg-gray-100"
+            }
+          >
+            {tab.label}
+          </button>
+        ))}
+      </div>
+
+{/* khi publish thi luu vao active page */}
       <Puck
+        key={activePage}
         config={puckConfig}
-        data={data}
+        data={loadData(activePage)}
         onPublish={(d) => {
-          localStorage.setItem(storageKeys[page], JSON.stringify(d));
-          alert("Saved!");
+          localStorage.setItem(storageKeys[activePage], JSON.stringify(d));
         }}
       />
-    );
-  }
+    </>
+  )
+}
 
+function PuckPage({ page }: { page: PageKey }) {
+  const data = loadData(page);
   return <Render config={puckConfig} data={data} />;
 }
 
@@ -143,12 +170,10 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<PuckPage page="home" editing={false} />} />
-        <Route path="/editor" element={<PuckPage page="home" editing={true} />} />
-        <Route path="/gioi-thieu" element={<PuckPage page="gioi-thieu" editing={false} />} />
-        <Route path="/gioi-thieu/editor" element={<PuckPage page="gioi-thieu" editing={true} />} />
-        <Route path="/hoi-vien" element={<PuckPage page="hoi-vien" editing={false} />} />
-        <Route path="/hoi-vien/editor" element={<PuckPage page="hoi-vien" editing={true} />} />
+        <Route path="/" element={<PuckPage page="home" />} />
+        <Route path="/editor" element={<SubPageEditor />} />
+        <Route path="/gioi-thieu" element={<PuckPage page="gioi-thieu" />} />
+        <Route path="/hoi-vien" element={<PuckPage page="hoi-vien" />} />
       </Routes>
     </BrowserRouter>
   );

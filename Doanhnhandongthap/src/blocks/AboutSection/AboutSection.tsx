@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { getBackgroundStyle, type SectionBackground } from "../shared/background";
 import { type ButtonStyle } from "../shared/buttonStyle";
 import { paddingYStyle, type SectionSpacing } from "../shared/spacing";
+import { type CornerRadius, cornerRadiusToCss } from "../shared/cornerRadius";
 
 export type AboutProfile = {
   avatarUrl: string;
@@ -11,20 +12,13 @@ export type AboutProfile = {
   company: string;
 };
 
-export type CardRadius = {
-  radiusTopLeft: string;
-  radiusTopRight: string;
-  radiusBottomRight: string;
-  radiusBottomLeft: string;
-};
-
 export type AboutSectionProps = {
   leftCard: {
     title: string;
     text: string;
     cornerImageUrl: string;
     veclbImageUrl: string;
-    radius: CardRadius;
+    radius: CornerRadius;
   };
   rightCard: {
     title: string;
@@ -35,7 +29,7 @@ export type AboutSectionProps = {
       companyRole: string;
       company: string;
     };
-    radius: CardRadius;
+    radius: CornerRadius;
   };
   arrowButton: Pick<ButtonStyle, "bgColor" | "textColor" | "borderRadius">;
   background: SectionBackground;
@@ -43,10 +37,8 @@ export type AboutSectionProps = {
   spacing: SectionSpacing;
 };
 
-function radiusStyle(radius: CardRadius) {
-  return {
-    borderRadius: `${radius.radiusTopLeft} ${radius.radiusTopRight} ${radius.radiusBottomRight} ${radius.radiusBottomLeft}`,
-  };
+function radiusStyle(radius: CornerRadius) {
+  return { borderRadius: cornerRadiusToCss(radius) };
 }
 
 function chunk<T>(items: T[], size: number): T[][] {
@@ -170,7 +162,7 @@ export default function AboutSection({
               style={{
                 backgroundColor: arrowButton.bgColor,
                 color: arrowButton.textColor,
-                borderRadius: arrowButton.borderRadius,
+                borderRadius: cornerRadiusToCss(arrowButton.borderRadius),
               }}
             >
               &#10094;
@@ -192,7 +184,7 @@ export default function AboutSection({
               style={{
                 backgroundColor: arrowButton.bgColor,
                 color: arrowButton.textColor,
-                borderRadius: arrowButton.borderRadius,
+                borderRadius: cornerRadiusToCss(arrowButton.borderRadius),
               }}
             >
               &#10095;

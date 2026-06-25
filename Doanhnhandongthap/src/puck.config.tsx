@@ -15,43 +15,12 @@ import { alignmentField } from "./blocks/shared/alignment";
 import { buttonStyleField } from "./blocks/shared/buttonStyle";
 import { cardStyleField } from "./blocks/shared/cardStyle";
 import { spacingField } from "./blocks/shared/spacing";
+import { cornerRadiusField } from "./blocks/shared/cornerRadius";
+import { backgroundField } from "./blocks/shared/background";
 
 // Field shared tái sử dụng cho mọi section, đừng hardcode className cho các thứ sau:
 // background (màu/gradient/ảnh/gif), alignment (căn chỉnh), buttonStyle (nút), cardStyle (thẻ), spacing (padding).
 // Mọi block mới (ValuesSection, ContactCta, ...) nên dùng lại các field này + helper tương ứng trong src/blocks/shared/.
-const backgroundField = {
-  type: "object" as const,
-  label: "Nền",
-  objectFields: {
-    type: {
-      type: "select" as const,
-      label: "Loại nền",
-      options: [
-        { label: "Màu", value: "color" },
-        { label: "Gradient", value: "gradient" },
-        { label: "Hình ảnh", value: "image" },
-        { label: "GIF", value: "gif" },
-      ],
-    },
-    color: { type: "text" as const, label: "Màu nền" },
-    gradientFrom: { type: "text" as const, label: "Gradient từ (vd: #fff hoặc rgba(...) 0%)" },
-    gradientVia: { type: "text" as const, label: "Gradient giữa 1 (tuỳ chọn)" },
-    gradientVia2: { type: "text" as const, label: "Gradient giữa 2 (tuỳ chọn)" },
-    gradientTo: { type: "text" as const, label: "Gradient đến" },
-    gradientDirection: { type: "text" as const, label: "Hướng gradient (vd: to bottom, 180deg)" },
-    gradient2From: { type: "text" as const, label: "Gradient phụ - từ (tuỳ chọn)" },
-    gradient2Via: { type: "text" as const, label: "Gradient phụ - giữa (tuỳ chọn)" },
-    gradient2To: { type: "text" as const, label: "Gradient phụ - đến (tuỳ chọn)" },
-    gradient2Direction: { type: "text" as const, label: "Hướng gradient phụ" },
-    imageUrl: { type: "text" as const, label: "URL ảnh nền" },
-    gifUrl: { type: "text" as const, label: "URL GIF nền" },
-    opacity: { type: "number" as const, label: "Độ mờ", min: 0, max: 1, step: 0.1 },
-    overlayUrl: { type: "text" as const, label: "URL ảnh/GIF phủ lên nền (trộn màu)" },
-    overlayBlendMode: { type: "text" as const, label: "Kiểu trộn màu (vd: screen)" },
-    baseImageUrl: { type: "text" as const, label: "Ảnh nền dưới cùng (dưới gradient, tuỳ chọn)" },
-    baseImagePosition: { type: "text" as const, label: "Vị trí ảnh nền dưới cùng (vd: right center)" },
-  },
-};
 
 // Header/Footer là chrome dùng chung mọi trang — sửa qua panel "Root" trong Puck, không phải block kéo-thả.
 const headerField = {
@@ -216,9 +185,12 @@ export const puckConfig: Config<Props, RootProps> = {
     Hero: {
       label: "Banner Trang Chủ",
       fields: {
+        
         subtitle: { type: "text", label: "Nhãn phụ" },
-        title: { type: "text", label: "Tiêu đề" },
-        description: { type: "richtext", label: "Mô tả" },
+        title: { type: "text",
+           label: "Tiêu đề",
+           contentEditable: true },
+        description: { type: "textarea", label: "Mô tả" },
         ctaTargetId: { type: "text", label: "ID khu vực cuộn tới" },
         background: backgroundField,
         card: {
@@ -234,10 +206,7 @@ export const puckConfig: Config<Props, RootProps> = {
                 { label: "Bên phải", value: "right" },
               ],
             },
-            radiusTopLeft: { type: "text", label: "Bo góc trên-trái" },
-            radiusTopRight: { type: "text", label: "Bo góc trên-phải" },
-            radiusBottomRight: { type: "text", label: "Bo góc dưới-phải" },
-            radiusBottomLeft: { type: "text", label: "Bo góc dưới-trái" },
+            radius: cornerRadiusField,
             textColor: { type: "text", label: "Màu chữ mô tả" },
             fontSize: { type: "text", label: "Kích thước chữ mô tả" },
           },
@@ -251,21 +220,17 @@ export const puckConfig: Config<Props, RootProps> = {
           "CLB Doanh nhân Đồng Tháp tại TPHCM quy tụ những người con quê hương Đất Sen Hồng. Với tinh thần Hợp tác - Đổi mới - Phát triển, CLB đóng vai trò là cầu nối chiến lược, hợp tác, thúc đẩy giá trị kinh doanh và lan toả sẻ chia nghĩa tình quê hương.",
         ctaTargetId: "lien-he",
         background: {
-          type: "gradient",
+          type: "gradient-image",
           gradientFrom: "#a8dfff 0%",
           gradientVia: "#cdeeff 25%",
           gradientVia2: "#66aaff 60%",
           gradientTo: "#3399ff 100%",
           gradientDirection: "0deg",
           overlayUrl: "https://webdemo.hexagon.xyz/medias/hieuunghero.webp",
-          overlayBlendMode: "screen",
         },
         card: {
           position: "left",
-          radiusTopLeft: "16px",
-          radiusTopRight: "100px",
-          radiusBottomRight: "16px",
-          radiusBottomLeft: "100px",
+          radius: { mode: "each", all: 0, topLeft: 16, topRight: 100, bottomRight: 16, bottomLeft: 100 },
           textColor: "rgba(255,255,255,0.8)",
           fontSize: "15px",
         },
@@ -273,7 +238,7 @@ export const puckConfig: Config<Props, RootProps> = {
           label: "Tham gia cộng đồng",
           bgColor: "#0072ff",
           textColor: "#ffffff",
-          borderRadius: "0 30px 0 30px",
+          borderRadius: { mode: "each", all: 0, topLeft: 0, topRight: 30, bottomRight: 0, bottomLeft: 30 },
           fontSize: "15px",
         },
       },
@@ -283,7 +248,7 @@ export const puckConfig: Config<Props, RootProps> = {
     SponsorBar: {
       label: "Dải Logo Hội Viên",
       fields: {
-        title: { type: "text", label: "Tiêu đề" },
+        title: { type: "text", label: "Tiêu đề", contentEditable: true},
         logos: {
           type: "array",
           label: "Danh sách logo",
@@ -302,7 +267,7 @@ export const puckConfig: Config<Props, RootProps> = {
       defaultProps: {
         title: "HỘI VIÊN CLB DOANH NHÂN ĐỒNG THÁP TẠI TP. HỒ CHÍ MINH",
         background: {
-          type: "gradient",
+          type: "gradient-image",
           gradientFrom: "#a8dfff",
           gradientVia: "#cdeeff",
           gradientTo: "#e6efff",
@@ -343,16 +308,7 @@ export const puckConfig: Config<Props, RootProps> = {
             text: { type: "textarea", label: "Nội dung" },
             cornerImageUrl: { type: "text", label: "URL ảnh góc" },
             veclbImageUrl: { type: "text", label: "URL ảnh vẽ nền" },
-            radius: {
-              type: "object",
-              label: "Bo góc thẻ",
-              objectFields: {
-                radiusTopLeft: { type: "text", label: "Bo góc trên-trái" },
-                radiusTopRight: { type: "text", label: "Bo góc trên-phải" },
-                radiusBottomRight: { type: "text", label: "Bo góc dưới-phải" },
-                radiusBottomLeft: { type: "text", label: "Bo góc dưới-trái" },
-              },
-            },
+            radius: cornerRadiusField,
           },
         },
         rightCard: {
@@ -382,16 +338,7 @@ export const puckConfig: Config<Props, RootProps> = {
                 company: { type: "text", label: "Nhãn 'Doanh nghiệp'" },
               },
             },
-            radius: {
-              type: "object",
-              label: "Bo góc thẻ",
-              objectFields: {
-                radiusTopLeft: { type: "text", label: "Bo góc trên-trái" },
-                radiusTopRight: { type: "text", label: "Bo góc trên-phải" },
-                radiusBottomRight: { type: "text", label: "Bo góc dưới-phải" },
-                radiusBottomLeft: { type: "text", label: "Bo góc dưới-trái" },
-              },
-            },
+            radius: cornerRadiusField,
           },
         },
         arrowButton: {
@@ -400,7 +347,7 @@ export const puckConfig: Config<Props, RootProps> = {
           objectFields: {
             bgColor: { type: "text", label: "Màu nút" },
             textColor: { type: "text", label: "Màu chữ nút" },
-            borderRadius: { type: "text", label: "Bo góc nút" },
+            borderRadius: cornerRadiusField,
           },
         },
         background: backgroundField,
@@ -409,7 +356,7 @@ export const puckConfig: Config<Props, RootProps> = {
       },
       defaultProps: {
         background: {
-          type: "gradient",
+          type: "gradient-image",
           gradientFrom: "#e8f4ff",
           gradientVia: "#ece6ff",
           gradientTo: "#f0e0ff",
@@ -420,7 +367,7 @@ export const puckConfig: Config<Props, RootProps> = {
         arrowButton: {
           bgColor: "#cdeeff",
           textColor: "#0B5077",
-          borderRadius: "8px",
+          borderRadius: { mode: "all", all: 8, topLeft: 8, topRight: 8, bottomRight: 8, bottomLeft: 8 },
         },
         leftCard: {
           title: "VỀ CÂU LẠC BỘ",
@@ -428,12 +375,7 @@ export const puckConfig: Config<Props, RootProps> = {
           cornerImageUrl:
             "https://webdemo.hexagon.xyz/medias/business-man-holding-smart-device-pointing-index-finger-screen-with-dot-connection-digital-illustration 1.png",
           veclbImageUrl: "https://webdemo.hexagon.xyz/medias/veclb.png",
-          radius: {
-            radiusTopLeft: "0",
-            radiusTopRight: "20px",
-            radiusBottomRight: "20px",
-            radiusBottomLeft: "0",
-          },
+          radius: { mode: "each", all: 0, topLeft: 0, topRight: 20, bottomRight: 20, bottomLeft: 0 },
         },
         rightCard: {
           title: "CƠ CẤU TỔ CHỨC",
@@ -443,12 +385,7 @@ export const puckConfig: Config<Props, RootProps> = {
             companyRole: "Chức vụ Doanh nghiệp:",
             company: "Doanh nghiệp:",
           },
-          radius: {
-            radiusTopLeft: "20px",
-            radiusTopRight: "0",
-            radiusBottomRight: "0",
-            radiusBottomLeft: "20px",
-          },
+          radius: { mode: "each", all: 0, topLeft: 20, topRight: 0, bottomRight: 0, bottomLeft: 20 },
           profiles: [
             {
               avatarUrl: "https://webdemo.hexagon.xyz/medias/Ellipse 2.png",
@@ -544,7 +481,7 @@ export const puckConfig: Config<Props, RootProps> = {
         title: "CÁC BAN CHUYÊN MÔN",
         subtitle: "CLB DOANH NHÂN ĐỒNG THÁP TẠI TP. HỒ CHÍ MINH",
         background: {
-          type: "gradient",
+          type: "gradient-image",
           gradientFrom: "#f0e0ff",
           gradientVia: "#dce8ff",
           gradientTo: "#d4e0ff",
@@ -553,7 +490,7 @@ export const puckConfig: Config<Props, RootProps> = {
         titleAlign: "center",
         spacing: { paddingY: 25 },
         cardStyle: {
-          borderRadius: "80px 0",
+          borderRadius: { mode: "each", all: 0, topLeft: 80, topRight: 0, bottomRight: 80, bottomLeft: 0 },
           textColor: "#ffffff",
           fontSize: "19px",
         },
@@ -561,7 +498,7 @@ export const puckConfig: Config<Props, RootProps> = {
           label: "Xem hoạt động",
           bgColor: "rgba(255,255,255,0.15)",
           textColor: "#ffffff",
-          borderRadius: "30px",
+          borderRadius: { mode: "all", all: 30, topLeft: 30, topRight: 30, bottomRight: 30, bottomLeft: 30 },
           fontSize: "13px",
         },
         teams: [
@@ -617,7 +554,7 @@ export const puckConfig: Config<Props, RootProps> = {
         title: "HÀNH TRÌNH KIẾN TẠO & GẮN KẾT GIÁ TRỊ",
         bgLoopUrl: "https://webdemo.hexagon.xyz/medias/hoa.webp",
         background: {
-          type: "gradient",
+          type: "gradient-image",
           gradientFrom: "#d4e0ff",
           gradientVia: "#e8d8ff",
           gradientTo: "#f5e0f8",
@@ -664,7 +601,7 @@ export const puckConfig: Config<Props, RootProps> = {
         title: "TIN TỨC & SỰ KIỆN",
         viewMoreLabel: "Xem thêm",
         background: {
-          type: "gradient",
+          type: "gradient-image",
           gradientFrom: "#f5e0f8",
           gradientVia: "#f8eeff",
           gradientTo: "#f2f4ff",
@@ -673,7 +610,7 @@ export const puckConfig: Config<Props, RootProps> = {
         titleAlign: "left",
         spacing: { paddingY: 25 },
         cardStyle: {
-          borderRadius: "20px",
+          borderRadius: { mode: "all", all: 20, topLeft: 20, topRight: 20, bottomRight: 20, bottomLeft: 20 },
           textColor: "#0B5077",
           fontSize: "17px",
         },
@@ -756,7 +693,7 @@ export const puckConfig: Config<Props, RootProps> = {
         viewMoreLabel: "Xem thêm",
         viewMoreHref: "#",
         background: {
-          type: "gradient",
+          type: "gradient-image",
           gradientFrom: "rgba(242,244,255,0.80) 0%",
           gradientVia: "transparent 35%",
           gradientTo: "rgba(240,185,252,0.88) 100%",
@@ -770,7 +707,7 @@ export const puckConfig: Config<Props, RootProps> = {
         },
         titleAlign: "left",
         cardStyle: {
-          borderRadius: "70px 15px 70px 15px",
+          borderRadius: { mode: "each", all: 0, topLeft: 70, topRight: 15, bottomRight: 70, bottomLeft: 15 },
           textColor: "#0b4c8c",
           fontSize: "15px",
         },
@@ -801,7 +738,7 @@ export const puckConfig: Config<Props, RootProps> = {
     ContactCta: {
       label: "Liên Hệ & Hợp Tác",
       fields: {
-        title: { type: "richtext", label: "Tiêu đề" },
+        title: { type: "textarea", label: "Tiêu đề" },
         pills: {
           type: "array",
           label: "Thông tin liên hệ",
@@ -824,7 +761,7 @@ export const puckConfig: Config<Props, RootProps> = {
         ],
         registerLabel: "Đăng ký hội viên",
         background: {
-          type: "gradient",
+          type: "gradient-image",
           gradientFrom: "rgba(240,185,252,0.95) 0%",
           gradientVia: "rgba(236,182,250,0.45) 22%",
           gradientVia2: "rgba(228,178,248,0.20) 58%",
