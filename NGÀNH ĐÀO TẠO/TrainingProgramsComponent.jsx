@@ -27,8 +27,20 @@ const TrainingProgramsComponent = ({
     };
     const ms = { ...defaultMenuStyle, ...menuStyle };
 
+    const getBorderRadius = (iconCornerRadius) => {
+        if (!iconCornerRadius || iconCornerRadius.mode === 'round') {
+            return '50%';
+        }
+        if (iconCornerRadius.mode === 'all') {
+            return `${iconCornerRadius.radius || 0}px`;
+        }
+        if (iconCornerRadius.mode === 'each') {
+            return `${iconCornerRadius.tl || 0}px ${iconCornerRadius.tr || 0}px ${iconCornerRadius.br || 0}px ${iconCornerRadius.bl || 0}px`;
+        }
+    }
+
     const defaultItemStyle = {
-        iconShape: 'round',
+        iconCornerRadius: {mode : 'round'},
     };
 
     const activeItems = menus[activeMenu]?.items || [];
@@ -108,9 +120,9 @@ const TrainingProgramsComponent = ({
                                             alt={item.title || ''}
                                             className="object-cover"
                                             style={{
-                                                width: is.iconShape === 'round' ? '56px' : '56px',
+                                                width: '56px',
                                                 height: '56px',
-                                                borderRadius: is.iconShape === 'round' ? '50%' : '4px',
+                                                borderRadius: getBorderRadius(is.iconCornerRadius),
                                             }}
                                         />
                                     )}
