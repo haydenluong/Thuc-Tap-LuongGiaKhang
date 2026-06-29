@@ -1,49 +1,6 @@
 import { useEffect, useState } from "react";
 
-export type HeaderLogoLine = {
-  text: string;
-  fontSize: number;
-  color: string;
-  align: "left" | "center" | "right";
-};
-
-export type HeaderLogo = {
-  imageUrl: string;
-  imageAlt: string;
-  link: string;
-  lines: HeaderLogoLine[];
-  lineGap: number;
-};
-
-export type HeaderMenuItem = {
-  id: string;
-  label: string;
-  url: string;
-};
-
-export type HeaderStyles = {
-  transparentOnHome: boolean;
-  nonHomeBgColor: string;
-  scrolledBgColor: string;
-  blurAmount: number;
-  headerHeight: number;
-  textColor: string;
-  hoverColor: string;
-  menuFontSize: number;
-  menuFontWeight: string;
-  gap: number;
-  scrolledBorderBottom: string;
-  scrolledShadow: string;
-};
-
-export type HeaderProps = {
-  logo: HeaderLogo;
-  menu: HeaderMenuItem[];
-  styles: HeaderStyles;
-  isHome: boolean;
-};
-
-export default function Header({ logo, menu, styles, isHome }: HeaderProps) {
+export default function Header({ logo, menu, styles, isHome }) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -75,7 +32,7 @@ export default function Header({ logo, menu, styles, isHome }: HeaderProps) {
     gap: "2px",
     flexShrink: 0,
     cursor: "pointer",
-  } as const;
+  };
 
   const LangToggle = () => (
     <div style={langToggleStyle}>

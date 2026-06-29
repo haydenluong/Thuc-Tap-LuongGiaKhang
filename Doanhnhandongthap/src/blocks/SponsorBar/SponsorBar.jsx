@@ -1,25 +1,9 @@
-import { getBackgroundStyle, type SectionBackground } from "../shared/background";
-import { alignClass, type Alignment } from "../shared/alignment";
-import { paddingYStyle, type SectionSpacing } from "../shared/spacing";
-import { getTitleStyle, type TitleStyle } from "../shared/titleStyle";
+import { getBackgroundStyle } from "../shared/background";
+import { alignClass } from "../shared/alignment";
+import { paddingYStyle } from "../shared/spacing";
+import { getTitleStyle } from "../shared/titleStyle";
 
-export type SponsorBarLogo = {
-  imageUrl?: string;
-  alt: string;
-  icon?: string;
-  label?: string;
-};
-
-export type SponsorBarProps = {
-  title: string;
-  logos: SponsorBarLogo[];
-  background: SectionBackground;
-  titleAlign: Alignment;
-  titleStyle: TitleStyle;
-  spacing: SectionSpacing;
-};
-
-export default function SponsorBar({ title, logos, background, titleAlign, titleStyle, spacing }: SponsorBarProps) {
+export default function SponsorBar({ title, logos, background, titleAlign, titleStyle, spacing }) {
   // tao array voi 3 items cua logos duplicated -> 6 items de tao hieu ung scroll lien tuc
   const track = [...logos, ...logos];
 

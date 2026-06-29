@@ -1,24 +1,8 @@
-import { getBackgroundStyle, type SectionBackground } from "../shared/background";
-import { alignClass, type Alignment } from "../shared/alignment";
-import { paddingYStyle, type SectionSpacing } from "../shared/spacing";
+import { getBackgroundStyle } from "../shared/background";
+import { alignClass } from "../shared/alignment";
+import { paddingYStyle } from "../shared/spacing";
 import { StatNumber } from "../shared/statCountUp";
-import { getTitleStyle, type TitleStyle } from "../shared/titleStyle";
-
-export type Stat = {
-  number: number;
-  suffix?: string;
-  desc: string;
-};
-
-export type StatsSectionProps = {
-  title: string;
-  bgLoopUrl: string;
-  stats: Stat[];
-  background: SectionBackground;
-  titleAlign: Alignment;
-  titleStyle: TitleStyle;
-  spacing: SectionSpacing;
-};
+import { getTitleStyle } from "../shared/titleStyle";
 
 export default function StatsSection({
   title,
@@ -28,7 +12,7 @@ export default function StatsSection({
   titleAlign,
   titleStyle,
   spacing,
-}: StatsSectionProps) {
+}) {
   return (
     <section
       id="hoi-vien"

@@ -3,10 +3,10 @@ import { fieldInputStyle, fieldMiniLabelStyle } from "./fieldStyles";
 
 // Đọc file ảnh người dùng chọn thành data URL (base64) — không có backend nên
 // không có nơi để "upload" thật, data URL nhúng luôn ảnh vào trong giá trị field.
-function readFileAsDataUrl(file: File): Promise<string> {
+function readFileAsDataUrl(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
-    reader.onload = () => resolve(reader.result as string);
+    reader.onload = () => resolve(reader.result);
     reader.onerror = reject;
     reader.readAsDataURL(file);
   });
@@ -15,18 +15,10 @@ function readFileAsDataUrl(file: File): Promise<string> {
 // URL input + nút "tải lên từ máy" + xem trước ảnh — dùng được cả như nội dung của
 // 1 Puck field (qua imageUrlField) và lồng trực tiếp bên trong field tự chế khác
 // (background.tsx dùng lại y nguyên component này cho overlayUrl/imageUrl/gifUrl/baseImageUrl).
-export function ImageUrlInput({
-  label = "URL ảnh",
-  value,
-  onChange,
-}: {
-  label?: string;
-  value: string | undefined;
-  onChange: (v: string) => void;
-}) {
-  const fileInputRef = useRef<HTMLInputElement>(null);
+export function ImageUrlInput({ label = "URL ảnh", value, onChange }) {
+  const fileInputRef = useRef(null);
 
-  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
     onChange(await readFileAsDataUrl(file));
@@ -86,10 +78,8 @@ export function ImageUrlInput({
 // Factory vì mỗi field cần label riêng trên sidebar (vd "URL ảnh logo", "URL icon"...).
 export function imageUrlField(label = "URL ảnh") {
   return {
-    type: "custom" as const,
+    type: "custom",
     label,
-    render: ({ value, onChange }: { value: string | undefined; onChange: (v: string) => void }) => (
-      <ImageUrlInput value={value} onChange={onChange} />
-    ),
+    render: ({ value, onChange }) => <ImageUrlInput value={value} onChange={onChange} />,
   };
 }

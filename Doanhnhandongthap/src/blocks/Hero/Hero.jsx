@@ -1,28 +1,9 @@
-import type { ReactNode } from "react";
-import { getBackgroundStyle, type SectionBackground } from "../shared/background";
-import { getButtonStyle, type ButtonStyle } from "../shared/buttonStyle";
-import { type CornerRadius, cornerRadiusToCss } from "../shared/cornerRadius";
-import { getTitleStyle, type TitleStyle } from "../shared/titleStyle";
+import { getBackgroundStyle } from "../shared/background";
+import { getButtonStyle } from "../shared/buttonStyle";
+import { cornerRadiusToCss } from "../shared/cornerRadius";
+import { getTitleStyle } from "../shared/titleStyle";
 
-export type HeroCard = {
-  position: "left" | "center" | "right";
-  radius: CornerRadius;
-};
-
-export type HeroProps = {
-  subtitle: string;
-  subtitleStyle: TitleStyle;
-  title: string;
-  description: ReactNode;
-  descriptionFontSize: number;
-  descriptionTextColor: string;
-  ctaTargetId: string;
-  background: SectionBackground;
-  card: HeroCard;
-  button: ButtonStyle;
-};
-
-const justifyByPosition: Record<HeroCard["position"], string> = {
+const justifyByPosition = {
   left: "justify-start",
   center: "justify-center",
   right: "justify-end",
@@ -39,7 +20,7 @@ export default function Hero({
   background,
   card,
   button,
-}: HeroProps) {
+}) {
   return (
     <section
       className="
@@ -98,4 +79,3 @@ export default function Hero({
     </section>
   );
 }
-

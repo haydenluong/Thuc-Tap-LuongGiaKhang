@@ -1,7 +1,5 @@
-export type Alignment = "left" | "center" | "right";
-
 export const alignmentField = {
-  type: "select" as const,
+  type: "select",
   label: "Căn chỉnh",
   options: [
     { label: "Trái", value: "left" },
@@ -10,13 +8,13 @@ export const alignmentField = {
   ],
 };
 
-const textAlignClass: Record<Alignment, string> = {
+const textAlignClass = {
   left: "text-left",
   center: "text-center",
   right: "text-right",
 };
 
-const justifyClass: Record<Alignment, string> = {
+const justifyClass = {
   left: "justify-start",
   center: "justify-center",
   right: "justify-end",
@@ -24,13 +22,13 @@ const justifyClass: Record<Alignment, string> = {
 
 // items-{start,center,end} — dùng cho wrapper flex-col khi cần các con (vd hr/div chiều
 // rộng cố định) bám theo lề trái/giữa/phải, vì text-align không tác dụng lên block có width cố định.
-const itemsClass: Record<Alignment, string> = {
+const itemsClass = {
   left: "items-start",
   center: "items-center",
   right: "items-end",
 };
 
-export function alignClass(align: Alignment, kind: "text" | "justify" | "items" = "text"): string {
+export function alignClass(align, kind = "text") {
   if (kind === "items") return itemsClass[align];
   return kind === "text" ? textAlignClass[align] : justifyClass[align];
 }

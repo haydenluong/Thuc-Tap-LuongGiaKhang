@@ -1,29 +1,9 @@
-import { getBackgroundStyle, type SectionBackground } from "../shared/background";
-import { alignClass, type Alignment } from "../shared/alignment";
-import { type CardStyle } from "../shared/cardStyle";
+import { getBackgroundStyle } from "../shared/background";
+import { alignClass } from "../shared/alignment";
 import { cornerRadiusToCss } from "../shared/cornerRadius";
-import { getButtonStyle, type ButtonStyle } from "../shared/buttonStyle";
-import { paddingYStyle, type SectionSpacing } from "../shared/spacing";
-import { getTitleStyle, type TitleStyle } from "../shared/titleStyle";
-
-export type Team = {
-  iconUrl: string;
-  alt: string;
-  title: string;
-};
-
-export type TeamsSectionProps = {
-  title: string;
-  subtitle: string;
-  teams: Team[];
-  background: SectionBackground;
-  titleAlign: Alignment;
-  titleStyle: TitleStyle;
-  subtitleStyle: TitleStyle;
-  cardStyle: CardStyle;
-  button: ButtonStyle;
-  spacing: SectionSpacing;
-};
+import { getButtonStyle } from "../shared/buttonStyle";
+import { paddingYStyle } from "../shared/spacing";
+import { getTitleStyle } from "../shared/titleStyle";
 
 export default function TeamsSection({
   title,
@@ -36,7 +16,7 @@ export default function TeamsSection({
   cardStyle,
   button,
   spacing,
-}: TeamsSectionProps) {
+}) {
   return (
     <section
       id="hoat-dong-ban"

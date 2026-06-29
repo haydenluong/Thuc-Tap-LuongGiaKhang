@@ -1,34 +1,24 @@
 import { fieldSelectStyle, LabeledNumberInput } from "./fieldStyles";
 
-export type CornerRadius = {
-  mode: "each" | "all" | "round";
-  all: number;
-  topLeft: number;
-  topRight: number;
-  bottomRight: number;
-  bottomLeft: number;
-};
-
-export function cornerRadiusToCss(r: CornerRadius): string {
+export function cornerRadiusToCss(r) {
   if (r.mode === "round") return "9999px";
   if (r.mode === "all") return `${r.all}px`;
   return `${r.topLeft}px ${r.topRight}px ${r.bottomRight}px ${r.bottomLeft}px`;
 }
 
 export const cornerRadiusField = {
-  type: "custom" as const,
+  type: "custom",
   label: "Bo góc",
-  render: ({ value, onChange }: { value: CornerRadius; onChange: (v: CornerRadius) => void }) => {
-    const setMode = (mode: CornerRadius["mode"]) => onChange({ ...value, mode });
-    const setAll = (all: number) => onChange({ ...value, all });
-    const setCorner = (key: "topLeft" | "topRight" | "bottomRight" | "bottomLeft", n: number) =>
-      onChange({ ...value, [key]: n });
+  render: ({ value, onChange }) => {
+    const setMode = (mode) => onChange({ ...value, mode });
+    const setAll = (all) => onChange({ ...value, all });
+    const setCorner = (key, n) => onChange({ ...value, [key]: n });
 
     return (
       <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
         <select
           value={value.mode}
-          onChange={(e) => setMode(e.target.value as CornerRadius["mode"])}
+          onChange={(e) => setMode(e.target.value)}
           style={fieldSelectStyle}
         >
           <option value="each">Bo từng góc</option>

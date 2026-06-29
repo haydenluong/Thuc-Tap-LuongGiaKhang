@@ -1,22 +1,6 @@
-import type { ReactNode } from "react";
-import { getBackgroundStyle, type SectionBackground } from "../shared/background";
-import { alignClass, type Alignment } from "../shared/alignment";
-import { getTitleStyle, type TitleStyle } from "../shared/titleStyle";
-
-export type ContactPill = {
-  icon: string;
-  label: string;
-  href: string;
-};
-
-export type ContactCtaProps = {
-  title: ReactNode;
-  pills: ContactPill[];
-  registerLabel: string;
-  background: SectionBackground;
-  titleAlign: Alignment;
-  titleStyle: TitleStyle;
-};
+import { getBackgroundStyle } from "../shared/background";
+import { alignClass } from "../shared/alignment";
+import { getTitleStyle } from "../shared/titleStyle";
 
 export default function ContactCta({
   title,
@@ -25,7 +9,7 @@ export default function ContactCta({
   background,
   titleAlign,
   titleStyle,
-}: ContactCtaProps) {
+}) {
   return (
     <section
       className="relative overflow-hidden pt-[100px] pb-[160px] text-center"

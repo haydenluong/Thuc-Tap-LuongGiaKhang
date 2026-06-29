@@ -1,51 +1,15 @@
 import { useEffect, useRef, useState } from "react";
-import { getBackgroundStyle, type SectionBackground } from "../shared/background";
-import { type ButtonStyle } from "../shared/buttonStyle";
-import { paddingYStyle, type SectionSpacing } from "../shared/spacing";
-import { type CornerRadius, cornerRadiusToCss } from "../shared/cornerRadius";
-import { getTitleStyle, type TitleStyle } from "../shared/titleStyle";
+import { getBackgroundStyle } from "../shared/background";
+import { paddingYStyle } from "../shared/spacing";
+import { cornerRadiusToCss } from "../shared/cornerRadius";
+import { getTitleStyle } from "../shared/titleStyle";
 
-export type AboutProfile = {
-  avatarUrl: string;
-  name: string;
-  clbRole: string;
-  companyRole: string;
-  company: string;
-};
-
-export type AboutSectionProps = {
-  leftCard: {
-    title: string;
-    titleStyle: TitleStyle;
-    text: string;
-    cornerImageUrl: string;
-    veclbImageUrl: string;
-    radius: CornerRadius;
-  };
-  rightCard: {
-    title: string;
-    titleStyle: TitleStyle;
-    profiles: AboutProfile[];
-    fieldLabels: {
-      name: string;
-      clbRole: string;
-      companyRole: string;
-      company: string;
-    };
-    radius: CornerRadius;
-  };
-  arrowButton: Pick<ButtonStyle, "bgColor" | "textColor" | "borderRadius">;
-  background: SectionBackground;
-  decorativeImageUrl: string;
-  spacing: SectionSpacing;
-};
-
-function radiusStyle(radius: CornerRadius) {
+function radiusStyle(radius) {
   return { borderRadius: cornerRadiusToCss(radius) };
 }
 
-function chunk<T>(items: T[], size: number): T[][] {
-  const groups: T[][] = [];
+function chunk(items, size) {
+  const groups = [];
   for (let i = 0; i < items.length; i += size) groups.push(items.slice(i, i + size));
   return groups;
 }
@@ -57,10 +21,10 @@ export default function AboutSection({
   background,
   decorativeImageUrl,
   spacing,
-}: AboutSectionProps) {
+}) {
   const slides = chunk(rightCard.profiles, 3);
   const [active, setActive] = useState(0);
-  const timerRef = useRef<ReturnType<typeof setInterval> | undefined>(undefined);
+  const timerRef = useRef(undefined);
 
   const resetAutoplay = () => {
     if (timerRef.current) clearInterval(timerRef.current);
@@ -74,11 +38,11 @@ export default function AboutSection({
     return () => clearInterval(timerRef.current);
   }, [slides.length]);
 
-  const goTo = (i: number) => {
+  const goTo = (i) => {
     setActive(i);
     resetAutoplay();
   };
-  const change = (step: number) => goTo((active + step + slides.length) % slides.length);
+  const change = (step) => goTo((active + step + slides.length) % slides.length);
 
   return (
     <section

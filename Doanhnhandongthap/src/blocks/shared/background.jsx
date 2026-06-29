@@ -1,44 +1,18 @@
-import type { CSSProperties } from "react";
 import { fieldMiniLabelStyle, fieldSelectStyle, LabeledSliderInput, LabeledTextInput } from "./fieldStyles";
 import { ImageUrlInput } from "./imageUrl";
 
-export type SectionBackground = {
-  type: "color" | "gradient-image" | "gradient-color" | "image" | "gif";
-  color?: string;
-  gradientFrom?: string;
-  gradientVia?: string;
-  gradientVia2?: string;
-  gradientTo?: string;
-  gradientDirection?: string;
-  // Gradient phụ, chồng NGAY DƯỚI gradient chính (vd nền values-section: 1 gradient dọc + 1 gradient ngang).
-  // Không còn field trên sidebar — set trực tiếp trong defaultProps khi cần.
-  gradient2From?: string;
-  gradient2Via?: string;
-  gradient2To?: string;
-  gradient2Direction?: string;
-  imageUrl?: string;
-  gifUrl?: string;
-  opacity?: number;
-  // Ảnh phủ TRÊN CÙNG gradient, trộn màu qua blend mode cố định "screen" (type: "gradient-image").
-  overlayUrl?: string;
-  // Ảnh nằm DƯỚI CÙNG, dưới mọi lớp gradient, chồng theo alpha thường (không blend mode) —
-  // vd values-section/contact-cta-section: gradient(s) phủ lên 1 ảnh nền.
-  baseImageUrl?: string;
-  baseImagePosition?: string;
-};
-
-function gradientLayer(from?: string, via?: string, via2?: string, to?: string, direction = "to bottom") {
+function gradientLayer(from, via, via2, to, direction = "to bottom") {
   const stops = [from, via, via2, to].filter(Boolean).join(", ");
   return stops ? `linear-gradient(${direction}, ${stops})` : "";
 }
 
-export function getBackgroundStyle(bg: SectionBackground): CSSProperties {
-  const style: CSSProperties = {};
+export function getBackgroundStyle(bg) {
+  const style = {};
 
   if (bg.type === "color") style.backgroundColor = bg.color;
 
-  const layers: string[] = [];
-  let blendMode: CSSProperties["backgroundBlendMode"];
+  const layers = [];
+  let blendMode;
 
   if (bg.type === "gradient-image" || bg.type === "gradient-color") {
     if (bg.type === "gradient-image" && bg.overlayUrl) {
@@ -72,7 +46,7 @@ export function getBackgroundStyle(bg: SectionBackground): CSSProperties {
   return style;
 }
 
-const typeOptions: { label: string; value: SectionBackground["type"] }[] = [
+const typeOptions = [
   { label: "Màu", value: "color" },
   { label: "Ảnh phủ lên Gradient", value: "gradient-image" },
   { label: "Màu phủ lên Gradient", value: "gradient-color" },
@@ -81,11 +55,10 @@ const typeOptions: { label: string; value: SectionBackground["type"] }[] = [
 ];
 
 export const backgroundField = {
-  type: "custom" as const,
+  type: "custom",
   label: "Nền",
-  render: ({ value, onChange }: { value: SectionBackground; onChange: (v: SectionBackground) => void }) => {
-    const set = <K extends keyof SectionBackground>(key: K, v: SectionBackground[K]) =>
-      onChange({ ...value, [key]: v });
+  render: ({ value, onChange }) => {
+    const set = (key, v) => onChange({ ...value, [key]: v });
 
     const isGradient = value.type === "gradient-image" || value.type === "gradient-color";
 
@@ -95,7 +68,7 @@ export const backgroundField = {
           <span style={fieldMiniLabelStyle}>Chọn loại nền</span>
           <select
             value={value.type}
-            onChange={(e) => set("type", e.target.value as SectionBackground["type"])}
+            onChange={(e) => set("type", e.target.value)}
             style={fieldSelectStyle}
           >
             {typeOptions.map((opt) => (

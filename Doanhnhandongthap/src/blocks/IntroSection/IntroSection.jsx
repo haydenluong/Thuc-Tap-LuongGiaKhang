@@ -1,33 +1,8 @@
-import { getBackgroundStyle, type SectionBackground } from "../shared/background";
+import { getBackgroundStyle } from "../shared/background";
 import { StatNumber } from "../shared/statCountUp";
-import { alignClass, type Alignment } from "../shared/alignment";
-import { getTitleStyle, type TitleStyle } from "../shared/titleStyle";
-import { dividerMarginStyle, type TitleDivider } from "../shared/titleDivider";
-
-export type IntroStat = {
-  number: number;
-  suffix?: string;
-  desc: string;
-};
-
-export type IntroSectionProps = {
-  title: string;
-  imageUrl: string;
-  imageAlt: string;
-  contentTitle: string;
-  paragraphs: string[];
-  visionLabel: string;
-  visionText: string;
-  missionLabel: string;
-  missionText: string;
-  stats: IntroStat[];
-  background: SectionBackground;
-  titleAlign: Alignment;
-  titleStyle: TitleStyle;
-  divider: TitleDivider;
-  accentColor: string;
-  accentWidth: number;
-};
+import { alignClass } from "../shared/alignment";
+import { getTitleStyle } from "../shared/titleStyle";
+import { dividerMarginStyle } from "../shared/titleDivider";
 
 export default function IntroSection({
   title,
@@ -46,7 +21,7 @@ export default function IntroSection({
   divider,
   accentColor,
   accentWidth,
-}: IntroSectionProps) {
+}) {
   return (
     <section className="max-w-[1100px] mx-auto px-5 py-[60px]" style={getBackgroundStyle(background)}>
       <div className={`mb-[50px] ${alignClass(titleAlign)}`}>

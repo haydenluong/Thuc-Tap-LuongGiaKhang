@@ -1,31 +1,8 @@
-import { getBackgroundStyle, type SectionBackground } from "../shared/background";
-import { alignClass, type Alignment } from "../shared/alignment";
-import { type CardStyle } from "../shared/cardStyle";
-import { paddingYStyle, type SectionSpacing } from "../shared/spacing";
+import { getBackgroundStyle } from "../shared/background";
+import { alignClass } from "../shared/alignment";
+import { paddingYStyle } from "../shared/spacing";
 import { cornerRadiusToCss } from "../shared/cornerRadius";
-import { getTitleStyle, type TitleStyle } from "../shared/titleStyle";
-
-export type NewsCard = {
-  imageUrl: string;
-  alt: string;
-  badge?: string;
-  date: string;
-  title: string;
-  desc: string;
-  href: string;
-  large?: boolean;
-};
-
-export type NewsSectionProps = {
-  title: string;
-  viewMoreLabel: string;
-  cards: NewsCard[];
-  background: SectionBackground;
-  titleAlign: Alignment;
-  titleStyle: TitleStyle;
-  cardStyle: CardStyle;
-  spacing: SectionSpacing;
-};
+import { getTitleStyle } from "../shared/titleStyle";
 
 export default function NewsSection({
   title,
@@ -36,7 +13,7 @@ export default function NewsSection({
   titleStyle,
   cardStyle,
   spacing,
-}: NewsSectionProps) {
+}) {
   return (
     <section
       id="tin-tuc"

@@ -1,16 +1,15 @@
-import type { Config } from "@puckeditor/core";
-import Hero, { type HeroProps } from "./blocks/Hero/Hero";
-import SponsorBar, { type SponsorBarProps } from "./blocks/SponsorBar/SponsorBar";
-import AboutSection, { type AboutSectionProps } from "./blocks/AboutSection/AboutSection";
-import TeamsSection, { type TeamsSectionProps } from "./blocks/TeamsSection/TeamsSection";
-import StatsSection, { type StatsSectionProps } from "./blocks/StatsSection/StatsSection";
-import NewsSection, { type NewsSectionProps } from "./blocks/NewsSection/NewsSection";
-import ValuesSection, {type ValuesSectionProps} from "./blocks/ValuesSection/ValuesSection";
-import ContactCta, { type ContactCtaProps } from "./blocks/ContactCta/ContactCta";
-import IntroSection, { type IntroSectionProps } from "./blocks/IntroSection/IntroSection";
-import MemberSection, { type MemberSectionProps } from "./blocks/MemberSection/MemberSection";
-import Header, { type HeaderProps } from "./blocks/Header/Header";
-import Footer, { type FooterProps } from "./blocks/Footer/Footer";
+import Hero from "./blocks/Hero/Hero";
+import SponsorBar from "./blocks/SponsorBar/SponsorBar";
+import AboutSection from "./blocks/AboutSection/AboutSection";
+import TeamsSection from "./blocks/TeamsSection/TeamsSection";
+import StatsSection from "./blocks/StatsSection/StatsSection";
+import NewsSection from "./blocks/NewsSection/NewsSection";
+import ValuesSection from "./blocks/ValuesSection/ValuesSection";
+import ContactCta from "./blocks/ContactCta/ContactCta";
+import IntroSection from "./blocks/IntroSection/IntroSection";
+import MemberSection from "./blocks/MemberSection/MemberSection";
+import Header from "./blocks/Header/Header";
+import Footer from "./blocks/Footer/Footer";
 import { alignmentField } from "./blocks/shared/alignment";
 import { buttonStyleField } from "./blocks/shared/buttonStyle";
 import { cardStyleField } from "./blocks/shared/cardStyle";
@@ -27,26 +26,26 @@ import { titleDividerField } from "./blocks/shared/titleDivider";
 
 // Header/Footer là chrome dùng chung mọi trang — sửa qua panel "Root" trong Puck, không phải block kéo-thả.
 const headerField = {
-  type: "object" as const,
+  type: "object",
   label: "Header",
   objectFields: {
     logo: {
-      type: "object" as const,
+      type: "object",
       label: "Logo",
       objectFields: {
         imageUrl: imageUrlField("URL ảnh logo"),
-        imageAlt: { type: "text" as const, label: "Alt text" },
-        link: { type: "text" as const, label: "Đường dẫn khi click logo" },
-        lineGap: { type: "number" as const, label: "Khoảng cách 2 dòng chữ (px)" },
+        imageAlt: { type: "text", label: "Alt text" },
+        link: { type: "text", label: "Đường dẫn khi click logo" },
+        lineGap: { type: "number", label: "Khoảng cách 2 dòng chữ (px)" },
         lines: {
-          type: "array" as const,
+          type: "array",
           label: "Các dòng chữ cạnh logo",
           arrayFields: {
-            text: { type: "text" as const, contentEditable: true, label: "Nội dung" },
-            fontSize: { type: "number" as const, label: "Cỡ chữ (px)" },
-            color: { type: "text" as const, label: "Màu chữ" },
+            text: { type: "text", contentEditable: true, label: "Nội dung" },
+            fontSize: { type: "number", label: "Cỡ chữ (px)" },
+            color: { type: "text", label: "Màu chữ" },
             align: {
-              type: "select" as const,
+              type: "select",
               label: "Căn chỉnh",
               options: [
                 { label: "Trái", value: "left" },
@@ -55,63 +54,63 @@ const headerField = {
               ],
             },
           },
-          getItemSummary: (item: { text: string }) => item.text,
+          getItemSummary: (item) => item.text,
         },
       },
     },
     menu: {
-      type: "array" as const,
+      type: "array",
       label: "Menu điều hướng",
       arrayFields: {
-        id: { type: "text" as const, label: "ID" },
-        label: { type: "text" as const, contentEditable: true, label: "Nhãn hiển thị" },
-        url: { type: "text" as const, label: "Đường dẫn" },
+        id: { type: "text", label: "ID" },
+        label: { type: "text", contentEditable: true, label: "Nhãn hiển thị" },
+        url: { type: "text", label: "Đường dẫn" },
       },
-      getItemSummary: (item: { label: string }) => item.label,
+      getItemSummary: (item) => item.label,
     },
     styles: {
-      type: "object" as const,
+      type: "object",
       label: "Kiểu hiển thị",
       objectFields: {
         transparentOnHome: {
-          type: "radio" as const,
+          type: "radio",
           label: "Trong suốt ở trang chủ (trước khi cuộn)",
           options: [{ label: "Có", value: true }, { label: "Không", value: false }],
         },
-        nonHomeBgColor: { type: "text" as const, label: "Màu nền (trang không phải trang chủ)" },
-        scrolledBgColor: { type: "text" as const, label: "Màu nền khi đã cuộn" },
-        blurAmount: { type: "number" as const, label: "Độ mờ kính khi đã cuộn (px)" },
-        headerHeight: { type: "number" as const, label: "Chiều cao header (px)" },
-        textColor: { type: "text" as const, label: "Màu chữ menu" },
-        hoverColor: { type: "text" as const, label: "Màu chữ khi hover" },
-        menuFontSize: { type: "number" as const, label: "Cỡ chữ menu (px)" },
-        menuFontWeight: { type: "text" as const, label: "Độ đậm chữ menu" },
-        gap: { type: "number" as const, label: "Khoảng cách giữa các mục menu (px)" },
-        scrolledBorderBottom: { type: "text" as const, label: "Viền dưới khi đã cuộn" },
-        scrolledShadow: { type: "text" as const, label: "Đổ bóng khi đã cuộn" },
+        nonHomeBgColor: { type: "text", label: "Màu nền (trang không phải trang chủ)" },
+        scrolledBgColor: { type: "text", label: "Màu nền khi đã cuộn" },
+        blurAmount: { type: "number", label: "Độ mờ kính khi đã cuộn (px)" },
+        headerHeight: { type: "number", label: "Chiều cao header (px)" },
+        textColor: { type: "text", label: "Màu chữ menu" },
+        hoverColor: { type: "text", label: "Màu chữ khi hover" },
+        menuFontSize: { type: "number", label: "Cỡ chữ menu (px)" },
+        menuFontWeight: { type: "text", label: "Độ đậm chữ menu" },
+        gap: { type: "number", label: "Khoảng cách giữa các mục menu (px)" },
+        scrolledBorderBottom: { type: "text", label: "Viền dưới khi đã cuộn" },
+        scrolledShadow: { type: "text", label: "Đổ bóng khi đã cuộn" },
       },
     },
   },
 };
 
 const footerField = {
-  type: "object" as const,
+  type: "object",
   label: "Footer",
   objectFields: {
     logoUrl: imageUrlField("URL ảnh logo"),
-    logoAlt: { type: "text" as const, label: "Alt text" },
+    logoAlt: { type: "text", label: "Alt text" },
     brandLines: {
-      type: "array" as const,
+      type: "array",
       label: "Các dòng tên đơn vị",
-      arrayFields: { value: { type: "text" as const, contentEditable: true, label: "Nội dung" } },
+      arrayFields: { value: { type: "text", contentEditable: true, label: "Nội dung" } },
     },
-    officeLabel: { type: "text" as const, contentEditable: true, label: "Nhãn 'Trụ sở chính'" },
+    officeLabel: { type: "text", contentEditable: true, label: "Nhãn 'Trụ sở chính'" },
     contacts: {
-      type: "array" as const,
+      type: "array",
       label: "Thông tin liên hệ",
       arrayFields: {
         icon: {
-          type: "select" as const,
+          type: "select",
           label: "Icon",
           options: [
             { label: "Địa chỉ", value: "location" },
@@ -119,34 +118,34 @@ const footerField = {
             { label: "Điện thoại", value: "phone" },
           ],
         },
-        text: { type: "textarea" as const, contentEditable: true, label: "Nội dung" },
+        text: { type: "textarea", contentEditable: true, label: "Nội dung" },
       },
-      getItemSummary: (item: { text: string }) => item.text,
+      getItemSummary: (item) => item.text,
     },
     linkColumns: {
-      type: "array" as const,
+      type: "array",
       label: "Cột liên kết",
       arrayFields: {
-        title: { type: "text" as const, contentEditable: true, label: "Tiêu đề cột" },
+        title: { type: "text", contentEditable: true, label: "Tiêu đề cột" },
         links: {
-          type: "array" as const,
+          type: "array",
           label: "Danh sách liên kết",
           arrayFields: {
-            label: { type: "text" as const, contentEditable: true, label: "Chữ hiển thị" },
-            href: { type: "text" as const, label: "Đường dẫn" },
+            label: { type: "text", contentEditable: true, label: "Chữ hiển thị" },
+            href: { type: "text", label: "Đường dẫn" },
           },
-          getItemSummary: (item: { label: string }) => item.label,
+          getItemSummary: (item) => item.label,
         },
       },
-      getItemSummary: (item: { title: string }) => item.title,
+      getItemSummary: (item) => item.title,
     },
-    copyrightText: { type: "text" as const, contentEditable: true, label: "Dòng bản quyền" },
+    copyrightText: { type: "text", contentEditable: true, label: "Dòng bản quyền" },
     socialLinks: {
-      type: "array" as const,
+      type: "array",
       label: "Liên kết mạng xã hội",
       arrayFields: {
         icon: {
-          type: "select" as const,
+          type: "select",
           label: "Icon",
           options: [
             { label: "Facebook", value: "facebook" },
@@ -155,40 +154,22 @@ const footerField = {
             { label: "LinkedIn", value: "linkedin" },
           ],
         },
-        href: { type: "text" as const, label: "Đường dẫn" },
+        href: { type: "text", label: "Đường dẫn" },
       },
-      getItemSummary: (item: { icon: string }) => item.icon,
+      getItemSummary: (item) => item.icon,
     },
-    background: { type: "text" as const, label: "Nền footer (css background)" },
+    background: { type: "text", label: "Nền footer (css background)" },
     decorativeImageUrl: imageUrlField("URL ảnh hoa văn trang trí (tuỳ chọn)"),
   },
 };
 
-export type Props = {
-  Hero: HeroProps;
-  SponsorBar: SponsorBarProps;
-  AboutSection: AboutSectionProps;
-  TeamsSection: TeamsSectionProps;
-  StatsSection: StatsSectionProps;
-  NewsSection: NewsSectionProps;
-  ValuesSection: ValuesSectionProps;
-  ContactCta: ContactCtaProps;
-  IntroSection: IntroSectionProps;
-  MemberSection: MemberSectionProps;
-};
-
-export type RootProps = {
-  header: Omit<HeaderProps, "isHome">;
-  footer: FooterProps;
-};
-
 // Config — đăng ký components với label + fields + defaultProps + render.
-export const puckConfig: Config<Props, RootProps> = {
+export const puckConfig = {
   components: {
     Hero: {
       label: "Banner Trang Chủ",
       fields: {
-        
+
         subtitle: { type: "text", contentEditable: true, label: "Nhãn phụ" },
         subtitleStyle: { ...titleStyleField, label: "Kiểu nhãn phụ" },
         title: { type: "text", contentEditable: true,
@@ -845,7 +826,7 @@ export const puckConfig: Config<Props, RootProps> = {
         paragraphs: [
           { value: "Cộng đồng Doanh nhân Đồng Tháp hướng đến việc xây dựng môi trường kết nối giữa các doanh nghiệp, thúc đẩy hợp tác và tạo ra nhiều giá trị bền vững cho địa phương." },
           { value: "Với tinh thần đổi mới, sáng tạo và phát triển lâu dài, cộng đồng doanh nhân luôn đóng vai trò quan trọng trong việc thúc đẩy kinh tế, hỗ trợ khởi nghiệp và nâng cao năng lực cạnh tranh." },
-        ] as unknown as string[],
+        ],
         visionLabel: "Tầm nhìn:",
         visionText: "Xây dựng mạng lưới doanh nhân năng động, hiện đại và hội nhập.",
         missionLabel: "Sứ mệnh:",
@@ -860,7 +841,7 @@ export const puckConfig: Config<Props, RootProps> = {
         titleStyle: { fontSize: 32, textColor: "#0f5b94" },
       },
       render: (props) => (
-        <IntroSection {...props} paragraphs={(props.paragraphs as unknown as { value: string }[]).map((p) => p.value)} />
+        <IntroSection {...props} paragraphs={props.paragraphs.map((p) => p.value)} />
       ),
     },
 
@@ -908,7 +889,7 @@ export const puckConfig: Config<Props, RootProps> = {
         paragraphs: [
           { value: "Hội viên là lực lượng nòng cốt tạo nên sự kết nối, chia sẻ và phát triển trong cộng đồng doanh nghiệp Đồng Tháp." },
           { value: "Việc tham gia hội viên mở ra cơ hội mở rộng mạng lưới, trao đổi kinh nghiệm, tiếp cận chương trình hỗ trợ và đồng hành trong các hoạt động xúc tiến thương mại." },
-        ] as unknown as string[],
+        ],
         benefitsTitle: "Quyền lợi hội viên",
         benefits: [
           { value: "Tham gia các chương trình kết nối doanh nghiệp" },
@@ -916,7 +897,7 @@ export const puckConfig: Config<Props, RootProps> = {
           { value: "Nhận thông tin thị trường và cơ hội hợp tác" },
           { value: "Tham gia các hoạt động cộng đồng doanh nhân" },
           { value: "Đồng hành cùng các chương trình phát triển địa phương" },
-        ] as unknown as string[],
+        ],
         stats: [
           { number: 800, label: "Hội viên" },
           { number: 120, label: "Đối tác" },
@@ -930,8 +911,8 @@ export const puckConfig: Config<Props, RootProps> = {
       render: (props) => (
         <MemberSection
           {...props}
-          paragraphs={(props.paragraphs as unknown as { value: string }[]).map((p) => p.value)}
-          benefits={(props.benefits as unknown as { value: string }[]).map((b) => b.value)}
+          paragraphs={props.paragraphs.map((p) => p.value)}
+          benefits={props.benefits.map((b) => b.value)}
         />
       ),
     },
@@ -1007,7 +988,7 @@ export const puckConfig: Config<Props, RootProps> = {
         brandLines: [
           { value: "CÂU LẠC BỘ DOANH NHÂN ĐỒNG THÁP" },
           { value: "TẠI TP. HỒ CHÍ MINH" },
-        ] as unknown as string[],
+        ],
         officeLabel: "TRỤ SỞ CHÍNH",
         contacts: [
           { icon: "location", text: "Phòng Đồng Tháp, HungHau Campus, Trường Đại học Văn Hiến, Đại lộ Nguyễn Văn Linh, Khu đô thị Nam Thành Phố, Thành phố Hồ Chí Minh" },
@@ -1062,7 +1043,7 @@ export const puckConfig: Config<Props, RootProps> = {
           <main style={{ marginTop: isHome ? 0 : `${header.styles.headerHeight}px` }}>{children}</main>
           <Footer
             {...footer}
-            brandLines={(footer.brandLines as unknown as { value: string }[]).map((l) => l.value)}
+            brandLines={footer.brandLines.map((l) => l.value)}
           />
         </div>
       );

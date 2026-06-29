@@ -1,26 +1,7 @@
-import { getBackgroundStyle, type SectionBackground } from "../shared/background";
-import { alignClass, type Alignment } from "../shared/alignment";
-import { type CardStyle } from "../shared/cardStyle";
+import { getBackgroundStyle } from "../shared/background";
+import { alignClass } from "../shared/alignment";
 import { cornerRadiusToCss } from "../shared/cornerRadius";
-import { getTitleStyle, type TitleStyle } from "../shared/titleStyle";
-
-export type ValueCard = {
-  iconUrl: string;
-  alt: string;
-  title: string;
-  desc: string;
-};
-
-export type ValuesSectionProps = {
-  title: string;
-  viewMoreLabel: string;
-  viewMoreHref: string;
-  cards: ValueCard[];
-  background: SectionBackground;
-  titleAlign: Alignment;
-  titleStyle: TitleStyle;
-  cardStyle: CardStyle;
-};
+import { getTitleStyle } from "../shared/titleStyle";
 
 // Vị trí xếp lệch (staggered) của 3 thẻ — không cho chỉnh sửa, gắn với đúng 3 card.
 const stackPositionClass = [
@@ -38,7 +19,7 @@ export default function ValuesSection({
   titleAlign,
   titleStyle,
   cardStyle,
-}: ValuesSectionProps) {
+}) {
   return (
     <section className="relative pt-20 pb-[90px]" style={getBackgroundStyle(background)}>
       <div className="relative z-[1] w-full max-w-[90%] mx-auto">

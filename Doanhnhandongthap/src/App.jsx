@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Puck, Render, type Data } from "@puckeditor/core";
+import { Puck, Render } from "@puckeditor/core";
 import "@puckeditor/core/puck.css";
 
 import { puckConfig } from "./puck.config";
@@ -10,16 +10,14 @@ import { PuckNumberFieldOverride } from "./blocks/shared/fieldStyles";
 // (Number("") === 0 khiến input commit ngay giá trị 0 mỗi khi xoá hết chữ số).
 const puckOverrides = { fieldTypes: { number: PuckNumberFieldOverride } };
 
-type PageKey = "home" | "gioi-thieu" | "hoi-vien";
-
 // Mỗi page có key localStorage riêng — sửa trang này không ảnh hưởng trang khác.
-const storageKeys: Record<PageKey, string> = {
+const storageKeys = {
   home: "puck-data",
   "gioi-thieu": "puck-data-gioi-thieu",
   "hoi-vien": "puck-data-hoi-vien",
 };
 
-const homeInitialData: Data = {
+const homeInitialData = {
   content: [
     {
       type: "Hero",
@@ -81,7 +79,7 @@ const homeInitialData: Data = {
   root: {},
 };
 
-const gioiThieuInitialData: Data = {
+const gioiThieuInitialData = {
   content: [
     {
       type: "IntroSection",
@@ -94,7 +92,7 @@ const gioiThieuInitialData: Data = {
   root: {},
 };
 
-const hoiVienInitialData: Data = {
+const hoiVienInitialData = {
   content: [
     {
       type: "MemberSection",
@@ -107,15 +105,15 @@ const hoiVienInitialData: Data = {
   root: {},
 };
 
-const initialDataByPage: Record<PageKey, Data> = {
+const initialDataByPage = {
   home: homeInitialData,
   "gioi-thieu": gioiThieuInitialData,
   "hoi-vien": hoiVienInitialData,
 };
 
-function loadData(page: PageKey): Data {
+function loadData(page) {
   const saved = localStorage.getItem(storageKeys[page]);
-  const data: Data = saved ? JSON.parse(saved) : initialDataByPage[page];
+  const data = saved ? JSON.parse(saved) : initialDataByPage[page];
 
   // root.props có thể thiếu field mới (vd: header/footer) — cả với data mặc định
   // (root: {} chưa từng có props) và data cũ lưu trước khi field đó tồn tại.
@@ -126,7 +124,7 @@ function loadData(page: PageKey): Data {
   };
 }
 
-const pageTabs: { key: PageKey; label: string }[] = [
+const pageTabs = [
   { key: "home", label: "Trang chủ" },
   { key: "gioi-thieu", label: "Giới thiệu" },
   { key: "hoi-vien", label: "Hội viên" },
@@ -134,7 +132,7 @@ const pageTabs: { key: PageKey; label: string }[] = [
 
 // function để edit được cả 3 page trong cùng một trang edit
 function SubPageEditor() {
-  const [activePage, setActivePage] = useState<PageKey>("home");
+  const [activePage, setActivePage] = useState("home");
   return (
     <>
       <div className="flex gap-2 border-b border-gray-200 bg-white px-4 py-2">
@@ -167,7 +165,7 @@ function SubPageEditor() {
   )
 }
 
-function PuckPage({ page }: { page: PageKey }) {
+function PuckPage({ page }) {
   const data = loadData(page);
   return <Render config={puckConfig} data={data} />;
 }

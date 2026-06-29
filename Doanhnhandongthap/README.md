@@ -1,3 +1,11 @@
+## Chỉnh sửa nội dung bằng Puck
+
+Để vào trình chỉnh sửa Puck, thêm `/editor` vào sau đường dẫn của trang cần sửa:
+
+- Trang chủ (`/`) → `/editor`
+- Giới thiệu (`/gioi-thieu`) → `/gioi-thieu/editor`
+- Hội viên (`/hoi-vien`) → `/hoi-vien/editor
+
 # React + TypeScript + Vite
 
 Dự án dùng Vite + React + TypeScript, có Tailwind CSS v4 và Puck (trình chỉnh sửa kéo-thả) để quản lý nội dung trang.

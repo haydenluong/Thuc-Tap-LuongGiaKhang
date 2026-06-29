@@ -1,30 +1,8 @@
-import { getBackgroundStyle, type SectionBackground } from "../shared/background";
+import { getBackgroundStyle } from "../shared/background";
 import { StatNumber } from "../shared/statCountUp";
-import { alignClass, type Alignment } from "../shared/alignment";
-import { getTitleStyle, type TitleStyle } from "../shared/titleStyle";
-import { dividerMarginStyle, type TitleDivider } from "../shared/titleDivider";
-
-export type MemberStat = {
-  number: number;
-  suffix?: string;
-  label: string;
-};
-
-export type MemberSectionProps = {
-  title: string;
-  imageUrl: string;
-  imageAlt: string;
-  contentTitle: string;
-  paragraphs: string[];
-  benefitsTitle: string;
-  benefits: string[];
-  stats: MemberStat[];
-  background: SectionBackground;
-  titleAlign: Alignment;
-  titleStyle: TitleStyle;
-  divider: TitleDivider;
-  checkmarkColor: string;
-};
+import { alignClass } from "../shared/alignment";
+import { getTitleStyle } from "../shared/titleStyle";
+import { dividerMarginStyle } from "../shared/titleDivider";
 
 export default function MemberSection({
   title,
@@ -40,7 +18,7 @@ export default function MemberSection({
   titleStyle,
   divider,
   checkmarkColor,
-}: MemberSectionProps) {
+}) {
   return (
     <section className="max-w-[1100px] mx-auto px-5 py-[60px]" style={getBackgroundStyle(background)}>
       <div className={`mb-[50px] ${alignClass(titleAlign)}`}>
